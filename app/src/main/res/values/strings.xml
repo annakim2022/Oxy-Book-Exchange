@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Oxy Book Exchange</string>
+    <string name="button_login">Log In</string>
+    <string name="button_signup">Sign Up</string>
+    <string name="button_buy">Buy</string>
+    <string name="button_sell">Sell</string>
+    <string name="button_chat">Chat</string>
+    <string name="button_account">Account</string>
+    <string name="button_menu">Menu</string>
+    <string name="button_logout">Log Out</string>
+    <string name="textView_listingsTitle">Listings</string>
+
+</resources>
