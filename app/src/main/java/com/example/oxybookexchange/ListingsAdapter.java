@@ -73,7 +73,6 @@ public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.ViewHo
         // return a new ViewHolder
         ViewHolder viewHolder = new ViewHolder(listingsView);
 
-
         return viewHolder;
     }
 
