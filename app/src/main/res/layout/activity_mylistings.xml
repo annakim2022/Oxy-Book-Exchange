@@ -4,9 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
     <TextView
-        android:id="@+id/textView_listingsTitle"
+        android:id="@+id/textView_myListingsTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -14,7 +13,7 @@
         android:layout_marginEnd="16dp"
         android:background="@color/orange"
         android:paddingLeft="10dp"
-        android:text="@string/textView_listingsTitle"
+        android:text="@string/textView_myListingsTitle"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
         android:textStyle="normal"
@@ -25,13 +24,13 @@
 
 
     <Spinner
-        android:id="@+id/spinner_search"
+        android:id="@+id/spinner_searchMy"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_listingsTitle"
+        app:layout_constraintTop_toBottomOf="@+id/textView_myListingsTitle"
         tools:ignore="SpeakableTextPresentCheck" />
 
 
@@ -42,24 +41,33 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:hint="Search..."
-        app:layout_constraintEnd_toStartOf="@+id/spinner_search"
+        app:layout_constraintEnd_toStartOf="@+id/spinner_searchMy"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_listingsTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/textView_myListingsTitle" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView_listings"
+        android:id="@+id/recyclerView_sell"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/button_newListing"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner_search"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@+id/textInputEditText" />
 
+    <Button
+        android:id="@+id/button_newListing"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:gravity="center"
+        android:text="@string/button_newListing"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,47 +1,37 @@
 package com.example.oxybookexchange;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.auth.api.Auth;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
+
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.common.api.GoogleApi;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.internal.OnConnectionFailedListener;
 import com.google.android.gms.tasks.Task;
 
-public class LoginActivity extends AppCompatActivity {
+public class SignInActivity extends AppCompatActivity {
+    //variables
+
     SignInButton signInButton;
 
-//    TextView textView_login;
+    //    TextView textView_login;
     private GoogleSignInClient googleSignInClient;
     private static final int SIGN_IN = 1;
 
-//    @Override
-//    public void onPointerCaptureChanged(boolean hasCapture) {
-//
-//    }
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_signin);
+        //set buttons
 
-    //Google authentication
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -60,7 +50,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-    };
+    }
 
     @Override
     protected void onStart() {
@@ -103,14 +93,12 @@ public class LoginActivity extends AppCompatActivity {
     public void updateUI(GoogleSignInAccount account){
 
         if(account != null){
-            Toast.makeText(this,"Logged in",Toast.LENGTH_LONG).show();
+//            Toast.makeText(this,"Logged in",Toast.LENGTH_LONG).show();
             startActivity(new Intent(this, MenuActivity.class));
 
         }else {
-            Toast.makeText(this,"Logged out",Toast.LENGTH_LONG).show();
+//            Toast.makeText(this,"Logged out",Toast.LENGTH_LONG).show();
         }
 
     }
-
-
 }

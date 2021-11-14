@@ -24,7 +24,6 @@ public class MenuActivity extends AppCompatActivity {
         //set buttons
         button_buy = findViewById(R.id.button_buy);
         button_sell = findViewById(R.id.button_sell);
-        button_chat = findViewById(R.id.button_chat);
         button_account = findViewById(R.id.button_account);
 
         button_buy.setOnClickListener(new View.OnClickListener() {
@@ -56,7 +55,7 @@ public class MenuActivity extends AppCompatActivity {
         startActivity(intent);
     }
     public void launchSellActivity(View view, String s) {
-        Intent intent = new Intent(this, SellActivity.class);
+        Intent intent = new Intent(this, MyListingsActivity.class);
         intent.putExtra("sell", s);
         startActivity(intent);
     }
