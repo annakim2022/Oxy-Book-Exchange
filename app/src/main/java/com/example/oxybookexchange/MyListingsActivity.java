@@ -1,7 +1,11 @@
 package com.example.oxybookexchange;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,6 +27,7 @@ public class MyListingsActivity extends AppCompatActivity {
     private ArrayList<Listings> listings;
     private RecyclerView recyclerView;
     private static AsyncHttpClient client = new AsyncHttpClient();
+    private Button button_add;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,9 +62,7 @@ public class MyListingsActivity extends AppCompatActivity {
                                 listingsObject.getString("semester"),
                                 listingsObject.getString("yearPublished"),
                                 listingsObject.getString("authors"),
-                                listingsObject.getString("profLast"),
-                                listingsObject.getString("profLast2"),
-                                listingsObject.getString("profLast3"));
+                                listingsObject.getString("professors"));
 
                         // add it to the array list
                         listings.add(listing);
@@ -85,5 +88,16 @@ public class MyListingsActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         // you need a layout manager, otherwise your recycler view is not going to show
 
-
-}}
+        button_add = findViewById(R.id.button_add);
+        button_add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            launchCreateActivity(v);
+            }
+        });
+    }
+    public void launchCreateActivity(View view) {
+        Intent intent = new Intent(this, CreateActivity.class);
+        startActivity(intent);
+    }
+}

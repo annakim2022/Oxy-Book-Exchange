@@ -17,13 +17,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.HttpURLConnection;
+
 import cz.msebera.android.httpclient.Header;
 
 public class InfoActivity extends AppCompatActivity {
 
     private TextView TVtitle;
     private TextView TVisbn;
-    private TextView TVpublisher;
     private TextView TVauthors;
     private TextView TVyear;
     private TextView TVquality;
@@ -31,49 +32,45 @@ public class InfoActivity extends AppCompatActivity {
     private TextView TVcourse;
     private TextView TVsemester;
     private TextView TVprofessors;
+    private String title, authors, year, quality, price, course, semester, professors;
     private Button button_backToListings;
 
     private String api_url;
     private String ISBN;
 
-    private static AsyncHttpClient client = new AsyncHttpClient();
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_moreinfo);
-        //get intent
+        setContentView(R.layout.activity_info);
+        AsyncHttpClient client = new AsyncHttpClient();
+
         Intent intent = getIntent();
         ISBN = intent.getStringExtra("ISBN");
-
         api_url = "https://openlibrary.org/isbn/" + ISBN + ".json";
+        Log.e("HERE3", api_url);
 
         client.get(api_url, new AsyncHttpResponseHandler() {
-
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-
-
+                Log.e("HERE", api_url);
                 try {
                     JSONObject json = new JSONObject(new String(responseBody));
-                    String title = json.getString("title");
-                    JSONArray publisherArray = json.getJSONArray("publishers");
-                    String publishers = publisherArray.getString(0);
-                    Log.e("HERE", publishers);
-                    for (int i = 1; i < publisherArray.length(); i++){
-                        publishers += ", " + publisherArray.getString(1);
-                    }
-                    String authors = json.getString("by_statement");
-                    String year = json.getString("publish_date");
-                    String quality = intent.getStringExtra("quality");
-                    String price = intent.getStringExtra("price");
-                    String course = intent.getStringExtra("course");
-                    String semester = intent.getStringExtra("semester");
-                    String professors = intent.getStringExtra("professors");
+                    title = json.getString("title");
+//                    JSONArray publisherArray = json.getJSONArray("publishers");
+//                    publishers = publisherArray.getString(0);
+//                    for (int i = 1; i < publisherArray.length(); i++){
+//                        publishers += ", " + publisherArray.getString(1);
+//                    }
+                    authors = json.getString("by_statement");
+                    year = json.getString("publish_date");
+                    quality = intent.getStringExtra("quality");
+                    price = intent.getStringExtra("price");
+                    course = intent.getStringExtra("course");
+                    semester = intent.getStringExtra("semester");
+                    professors = intent.getStringExtra("professors");
 
                     TVtitle = findViewById(R.id.title);
                     TVisbn = findViewById(R.id.isbn);
-                    TVpublisher = findViewById(R.id.publisher);
                     TVauthors= findViewById(R.id.authors);
                     TVyear = findViewById(R.id.year);
                     TVquality = findViewById(R.id.quality);
@@ -82,11 +79,9 @@ public class InfoActivity extends AppCompatActivity {
                     TVsemester = findViewById(R.id.semester);
                     TVprofessors = findViewById(R.id.professors);
 
-                    Log.e("HERE", title + ISBN + publishers + authors + year);
 
                     TVtitle.setText(title);
                     TVisbn.setText(ISBN);
-                    TVpublisher.setText(publishers);
                     TVauthors.setText(authors);
                     TVyear.setText(year);
                     TVquality.setText(quality);
@@ -99,12 +94,10 @@ public class InfoActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-
             }
         });
 
@@ -117,6 +110,9 @@ public class InfoActivity extends AppCompatActivity {
         });
 
     }
+
+
+
     private void goBack(View v){
 //        Intent intent = new Intent(this, ListingsActivity.class);
 //        startActivityForResult(intent, 1);

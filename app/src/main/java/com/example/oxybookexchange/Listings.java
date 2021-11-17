@@ -16,11 +16,11 @@ public class Listings {
     private String semester;
     private String yearPublished;
     private String authors;
-    private String profLast, profLast2, profLast3;
+    private String professors;
 
 
     public Listings(String listingID, String userID, String ISBN, String title, String quality, String price, String course,
-                    String semester, String yearPublished, String authors, String profLast, String profLast2, String profLast3) {
+                    String semester, String yearPublished, String authors, String professors) {
 
         this.listingID = listingID;
         this.userID = userID;
@@ -32,9 +32,7 @@ public class Listings {
         this.semester = semester;
         this.yearPublished = yearPublished;
         this.authors = authors;
-        this.profLast = profLast;
-        this.profLast2 = profLast2;
-        this.profLast3 = profLast3;
+        this.professors = professors;
 
 
     }
@@ -120,28 +118,12 @@ public class Listings {
         this.authors = authorLast;
     }
 
-
-    public String getProfLast() {
-        return profLast;
+    public String getProfessors() {
+        return professors;
     }
 
-    public void setProfLast(String profLast) {
-        this.profLast = profLast;
+    public void setProfessors(String profLast) {
+        this.professors = professors;
     }
 
-    public String getProfLast2() {
-        return profLast2;
-    }
-
-    public void setProfLast2(String profLast2) {
-        this.profLast2 = profLast2;
-    }
-
-    public String getProfLast3() {
-        return profLast3;
-    }
-
-    public void setProfLast3(String profLast3) {
-        this.profLast3 = profLast3;
-    }
 }

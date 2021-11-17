@@ -75,7 +75,7 @@ public class MyListingsAdapter extends RecyclerView.Adapter<MyListingsAdapter.Vi
         // set the view based on the data and the view names
         holder.textView_title.setText(listing.getTitle());
         holder.textView_course.setText(listing.getCourse());
-        holder.textView_professor.setText(listing.getProfLast());
+        holder.textView_professor.setText(listing.getProfessors());
         holder.textView_semester.setText(listing.getSemester());
         holder.textView_quality.setText(listing.getQuality());
         holder.textView_price.setText(listing.getPrice());

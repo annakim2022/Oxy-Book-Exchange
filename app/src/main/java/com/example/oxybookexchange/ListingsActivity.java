@@ -44,13 +44,14 @@ import cz.msebera.android.httpclient.Header;
 
 public class ListingsActivity extends AppCompatActivity {
 
-    private ArrayList<Listings> listings;
-    private RecyclerView recyclerView;
-    private static AsyncHttpClient client = new AsyncHttpClient();
+    // spinner
+    ArrayAdapter<String> searchAdapter;
     Spinner spinnerSearch;
     ArrayList<String> searchList = new ArrayList<>();
-    ArrayAdapter<String> searchAdapter;
-    RequestQueue requestQueue;
+
+    // recycler view
+    private RecyclerView recyclerView;
+    private ArrayList<Listings> listings;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,71 +59,53 @@ public class ListingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_listings);
 
         // spinner
-        requestQueue = Volley.newRequestQueue(this);
         spinnerSearch = findViewById(R.id.spinner_search);
-
-        // look up the recycler view in the main activity xml
-        recyclerView = findViewById(R.id.recyclerView_listings);
-        // create a new ArrayList
-        listings = new ArrayList<>();
-        String api_url = "http://134.69.196.240:3308/listings";
-
         searchList.add("ISBN");
         searchList.add("Title");
         searchList.add("Author");
         searchList.add("Course");
         searchList.add("Professor");
-
         searchAdapter = new ArrayAdapter<>(ListingsActivity.this, android.R.layout.simple_spinner_item, searchList);
         searchAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerSearch.setAdapter(searchAdapter);
 
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, api_url, null, new com.android.volley.Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-                try {
-                    for (int i = 0; i < response.length(); i++) {
-                        JSONObject jsonObject = response.getJSONObject(i);
-                        //String ISBN = jsonObject.getString("ISBN"); // gets all ISBN numbers
-                        Listings listing = new Listings(
-                                jsonObject.getString("listingID"),
-                                jsonObject.getString("userID"),
-                                jsonObject.getString("ISBN"),
-                                jsonObject.getString("title"),
-                                jsonObject.getString("quality"),
-                                jsonObject.getString("price"),
-                                jsonObject.getString("course"),
-                                jsonObject.getString("semester"),
-                                jsonObject.getString("yearPublished"),
-                                jsonObject.getString("authors"),
-                                jsonObject.getString("profLast"),
-                                jsonObject.getString("profLast2"),
-                                jsonObject.getString("profLast3"));
+        // recycler view
+        Intent intent = getIntent();
+        recyclerView = findViewById(R.id.recyclerView_listings);
+        listings = new ArrayList<>();
+        ArrayList<String> listingID = intent.getStringArrayListExtra("listingID");
+        ArrayList<String> userID = intent.getStringArrayListExtra("userID");
+        ArrayList<String> ISBN = intent.getStringArrayListExtra("ISBN");
+        ArrayList<String> title = intent.getStringArrayListExtra("title");
+        ArrayList<String> quality = intent.getStringArrayListExtra("quality");
+        ArrayList<String> price = intent.getStringArrayListExtra("price");
+        ArrayList<String> course = intent.getStringArrayListExtra("course");
+        ArrayList<String> semester = intent.getStringArrayListExtra("semester");
+        ArrayList<String> yearPublished = intent.getStringArrayListExtra("yearPublished");
+        ArrayList<String> authors = intent.getStringArrayListExtra("authors");
+        ArrayList<String> professors = intent.getStringArrayListExtra("professors");
 
-                        // add it to the array list
-                        listings.add(listing);
-                    }
+        for (int i = 0; i < listingID.size(); i++) {
+            Listings listing = new Listings(
+                    listingID.get(i),
+                    userID.get(i),
+                    ISBN.get(i),
+                    title.get(i),
+                    quality.get(i),
+                    price.get(i),
+                    course.get(i),
+                    semester.get(i),
+                    yearPublished.get(i),
+                    authors.get(i),
+                    professors.get(i));
+            listings.add(listing);
+        }
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-        }, new com.android.volley.Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        });
-        requestQueue.add(jsonArrayRequest);
-        // create adapter to pass in the data
+        // call adapter
         ListingsAdapter adapter = new ListingsAdapter(listings);
-        // attach the adapter to the recycler view to populate
         recyclerView.setAdapter(adapter);
-        // define where to add the layout manager
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        // you need a layout manager, otherwise your recycler view is not going to show
-        Log.e("HERE", "here");
+
 
     }
 

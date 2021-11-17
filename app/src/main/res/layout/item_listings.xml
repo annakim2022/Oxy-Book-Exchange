@@ -47,8 +47,8 @@
                 android:id="@+id/textView_course"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
                 android:layout_marginLeft="25dp"
+                android:layout_marginTop="3dp"
                 android:text="TextView"
                 android:textColor="#302D2D" />
 
@@ -56,8 +56,8 @@
                 android:id="@+id/textView_semester"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
                 android:layout_marginLeft="25dp"
+                android:layout_marginTop="3dp"
                 android:text="TextView"
                 android:textColor="#302D2D" />
         </LinearLayout>

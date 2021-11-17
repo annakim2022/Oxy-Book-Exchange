@@ -2,6 +2,7 @@ package com.example.oxybookexchange;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import java.util.List;
 public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.ViewHolder> {
 
     private List<Listings> listings;
+    private String ISBN, quality, price, course, semester, professors;
 
     // pass this list into the constructor of the adapter
     public ListingsAdapter(List<Listings> listings) {
@@ -47,33 +49,45 @@ public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.ViewHo
 
         // grab the actual data model based on the position
         Listings listing = listings.get(position);
-
-
         // set the view based on the data and the view names
         holder.textView_title.setText(listing.getTitle());
         holder.textView_course.setText(listing.getCourse());
-        holder.textView_profLast.setText(listing.getProfLast());
+        holder.textView_profLast.setText(listing.getProfessors());
         holder.textView_semester.setText(listing.getSemester());
         holder.textView_quality.setText(listing.getQuality());
         holder.textView_price.setText(listing.getPrice());
+        ISBN = listing.getISBN();
+        quality = listing.getQuality();
+        price = listing.getPrice();
+        course = listing.getCourse();
+        semester = listing.getSemester();
+        professors = listing.getProfessors();
+//        if (!listing.getProfLast2().equals("null")) {
+//            professors += ", " + listing.getProfLast2() ;
+//        };
+//        if (!listing.getProfLast3().equals("null")) {
+//            professors += ", " + listing.getProfLast3() ;
+//        };
 
+        Log.e("HERE1", ISBN);
         holder.button_moreInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String ISBN = listing.getISBN();
-                String quality = listing.getQuality();
-                String price = "$" + listing.getPrice();
-                String course = listing.getCourse();
-                String semester = listing.getSemester();
-                String professors = listing.getProfLast();
-                        if (listing.getProfLast2() != "null"){
-                        professors += ", " + listing.getProfLast2() + ", " + listing.getProfLast3();
-                        }
-                launchInfoActivity(v, ISBN, quality, price, course, semester, professors);
+                Intent intent = new Intent(holder.button_moreInfo.getContext(), InfoActivity.class);
+//            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("ISBN", ISBN);
+                intent.putExtra("quality", quality);
+                intent.putExtra("price", price);
+                intent.putExtra("course", course);
+                intent.putExtra("semester", semester);
+                intent.putExtra("professors", professors);
+                Log.e("HERE", professors);
+
+                holder.button_moreInfo.getContext().startActivity(intent);
             }
+
         });
 
-        // if I have to load image, this is where I load it
     }
 
     @Override
@@ -85,16 +99,6 @@ public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.ViewHo
     // provides a direct reference to each of the views within the data item
     // used to cache the views within the item layout for fast access
 
-    public void launchInfoActivity(View v, String ISBN, String quality, String price, String course, String semester, String professors) {
-        Intent intent = new Intent(v.getContext(), InfoActivity.class);
-        intent.putExtra("ISBN", ISBN);
-        intent.putExtra("quality", quality);
-        intent.putExtra("price", price);
-        intent.putExtra("course", course);
-        intent.putExtra("semester", semester);
-        intent.putExtra("professors", professors);
-        v.getContext().startActivity(intent);
-    }
 
     class ViewHolder extends RecyclerView.ViewHolder {
         // all the views you want to set as you render the row
@@ -124,6 +128,8 @@ public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.ViewHo
             button_moreInfo = itemView.findViewById(R.id.button_moreInfo);
 
         }
+
+
 
     }
 
