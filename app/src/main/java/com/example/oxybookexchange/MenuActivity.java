@@ -34,8 +34,7 @@ public class MenuActivity extends AppCompatActivity {
     Button button_buy;
     Button button_sell;
     Button button_account;
-    RequestQueue requestQueue;
-    private ArrayList<String> listingID, userID, ISBN, title, quality, price, course, semester, yearPublished, authors, profLast, profLast2, profLast3;
+    private ArrayList<String> listingID, userID, ISBN, title, quality, price, course, semester, yearPublished, authors, professors;
 //    private static AsyncHttpClient client = new AsyncHttpClient();
 
     @Override
@@ -61,7 +60,7 @@ public class MenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String message2 = "let me sell";
-                launchSellActivity(v, message2);
+                launchMyListingsActivity(v, message2);
             }
         });
 
@@ -77,7 +76,6 @@ public class MenuActivity extends AppCompatActivity {
     public void launchListingsActivity(View view) {
 
         Intent intent = new Intent(this, ListingsActivity.class);
-        requestQueue = Volley.newRequestQueue(this);
         listingID = new ArrayList<>();
         userID = new ArrayList<>();
         ISBN = new ArrayList<>();
@@ -88,13 +86,12 @@ public class MenuActivity extends AppCompatActivity {
         semester = new ArrayList<>();
         yearPublished = new ArrayList<>();
         authors = new ArrayList<>();
-        profLast = new ArrayList<>();
-        profLast2 = new ArrayList<>();
-        profLast3 = new ArrayList<>();
+        professors = new ArrayList<>();
 
-        String api_url = "http://134.69.196.240:3308/listings";
+        String api_url = "http://134.69.236.202:3308/listings";
 
         client.get(api_url, new AsyncHttpResponseHandler() {
+
                     JSONArray listingsJSON = null;
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -112,9 +109,7 @@ public class MenuActivity extends AppCompatActivity {
                                 semester.add(jsonObject.getString("semester"));
                                 yearPublished.add(jsonObject.getString("yearPublished"));
                                 authors.add(jsonObject.getString("authors"));
-                                profLast.add(jsonObject.getString("profLast"));
-                                profLast2.add(jsonObject.getString("profLast2"));
-                                profLast3.add(jsonObject.getString("profLast3"));
+                                professors.add(jsonObject.getString("professors"));
 
                             }
                             intent.putExtra("listingID", listingID);
@@ -127,9 +122,7 @@ public class MenuActivity extends AppCompatActivity {
                             intent.putExtra("semester", semester);
                             intent.putExtra("yearPublished", yearPublished);
                             intent.putExtra("authors", authors);
-                            intent.putExtra("profLast", profLast);
-                            intent.putExtra("profLast2", profLast2);
-                            intent.putExtra("profLast3", profLast3);
+                            intent.putExtra("professors", professors);
                             startActivity(intent);
 
                         } catch (JSONException e) {
@@ -141,16 +134,71 @@ public class MenuActivity extends AppCompatActivity {
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
 
                     }
-
                 }
         );
-
     }
 
-    public void launchSellActivity(View view, String s) {
+    public void launchMyListingsActivity(View view, String s) {
         Intent intent = new Intent(this, MyListingsActivity.class);
-        intent.putExtra("sell", s);
-        startActivity(intent);
+        listingID = new ArrayList<>();
+        userID = new ArrayList<>();
+        ISBN = new ArrayList<>();
+        title = new ArrayList<>();
+        quality = new ArrayList<>();
+        price = new ArrayList<>();
+        course = new ArrayList<>();
+        semester = new ArrayList<>();
+        yearPublished = new ArrayList<>();
+        authors = new ArrayList<>();
+        professors = new ArrayList<>();
+
+        String api_url = "http://134.69.236.202:3308/listings";
+
+        client.get(api_url, new AsyncHttpResponseHandler() {
+
+                    JSONArray myListingsJSON = null;
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        try {
+                            myListingsJSON = new JSONArray(new String(responseBody));
+                            for (int i = 0; i < myListingsJSON.length(); i++) {
+                                JSONObject jsonObject = myListingsJSON.getJSONObject(i);
+                                listingID.add(jsonObject.getString("listingID"));
+                                userID.add(jsonObject.getString("userID"));
+                                ISBN.add(jsonObject.getString("ISBN"));
+                                title.add(jsonObject.getString("title"));
+                                quality.add(jsonObject.getString("quality"));
+                                price.add(jsonObject.getString("price"));
+                                course.add(jsonObject.getString("course"));
+                                semester.add(jsonObject.getString("semester"));
+                                yearPublished.add(jsonObject.getString("yearPublished"));
+                                authors.add(jsonObject.getString("authors"));
+                                professors.add(jsonObject.getString("professors"));
+
+                            }
+                            intent.putExtra("listingID", listingID);
+                            intent.putExtra("userID", userID);
+                            intent.putExtra("ISBN", ISBN);
+                            intent.putExtra("title", title);
+                            intent.putExtra("quality", quality);
+                            intent.putExtra("price", price);
+                            intent.putExtra("course", course);
+                            intent.putExtra("semester", semester);
+                            intent.putExtra("yearPublished", yearPublished);
+                            intent.putExtra("authors", authors);
+                            intent.putExtra("professors", professors);
+                            startActivity(intent);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                    }
+                }
+        );
     }
 
     public void launchAccountActivity(View view) {

@@ -10,6 +10,12 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.textfield.TextInputEditText;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -17,6 +23,9 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -30,6 +39,8 @@ public class CreateActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create);
+
+        RequestQueue MyRequestQueue = Volley.newRequestQueue(this);
 
         input_isbn = findViewById(R.id.input_isbn);
         input_title = findViewById(R.id.input_title);
@@ -62,7 +73,37 @@ public class CreateActivity extends AppCompatActivity {
                 authors = input_authors.getText().toString();
                 yearPublished = input_yearPublished.getText().toString();
                 professors = input_professors.getText().toString();
-                Log.e("SUCCESS", title+quality+price+course+semester+authors+yearPublished+professors);
+
+                String url = "http://134.69.236.202:3308/newlisting";
+                StringRequest MyStringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        //This code is executed if the server responds, whether or not the response contains data.
+                        //The String 'response' contains the server's response.
+                    }
+                }, new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        //This code is executed if there is an error.
+                    }
+                }) {
+                    protected Map<String, String> getParams() {
+                        Map<String, String> MyData = new HashMap<String, String>();
+                        MyData.put("listingID", "0"); //Add the data you'd like to send to the server.
+                        MyData.put("userID", "1000");
+                        MyData.put("ISBN", "9780385339032");
+                        MyData.put("title", "Screenplay: The Foundations of Screenwriting");
+                        MyData.put("quality", "like new");
+                        MyData.put("price", "10.00");
+                        MyData.put("course", "MAC 320");
+                        MyData.put("semester", "Spring 2021");
+                        MyData.put("authors", "Syd Field");
+                        MyData.put("professors", "Williams");
+
+                        return MyData;
+                    }
+                };
+                MyRequestQueue.add(MyStringRequest);
             }
         });
     }

@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,78 +25,79 @@ import java.util.ArrayList;
 import cz.msebera.android.httpclient.Header;
 
 public class MyListingsActivity extends AppCompatActivity {
-    private ArrayList<Listings> listings;
-    private RecyclerView recyclerView;
-    private static AsyncHttpClient client = new AsyncHttpClient();
+
     private Button button_add;
+    // spinner
+    ArrayAdapter<String> searchAdapter;
+    Spinner spinnerSearchMy;
+    ArrayList<String> searchList = new ArrayList<>();
+
+    // recycler view
+    private RecyclerView recyclerView;
+    private ArrayList<Listings> listings;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mylistings);
 
+        // spinner
+        spinnerSearchMy = findViewById(R.id.spinner_searchMy);
+        searchList.add("ISBN");
+        searchList.add("Title");
+        searchList.add("Author");
+        searchList.add("Course");
+        searchList.add("Professor");
+        searchAdapter = new ArrayAdapter<>(MyListingsActivity.this, android.R.layout.simple_spinner_item, searchList);
+        searchAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerSearchMy.setAdapter(searchAdapter);
 
-        // look up the recycler view in the main activity xml
-        recyclerView = findViewById(R.id.recyclerView_sell);
-        // create a new ArrayList
+        // recycler view
+        Intent intent = getIntent();
+        recyclerView = findViewById(R.id.recyclerView_myListings);
         listings = new ArrayList<>();
-        String api_url = "http://134.69.224.74:3308/listings";
+        ArrayList<String> listingID = intent.getStringArrayListExtra("listingID");
+        ArrayList<String> userID = intent.getStringArrayListExtra("userID");
+        ArrayList<String> ISBN = intent.getStringArrayListExtra("ISBN");
+        ArrayList<String> title = intent.getStringArrayListExtra("title");
+        ArrayList<String> quality = intent.getStringArrayListExtra("quality");
+        ArrayList<String> price = intent.getStringArrayListExtra("price");
+        ArrayList<String> course = intent.getStringArrayListExtra("course");
+        ArrayList<String> semester = intent.getStringArrayListExtra("semester");
+        ArrayList<String> yearPublished = intent.getStringArrayListExtra("yearPublished");
+        ArrayList<String> authors = intent.getStringArrayListExtra("authors");
+        ArrayList<String> professors = intent.getStringArrayListExtra("professors");
 
-        client.get(api_url, new AsyncHttpResponseHandler() {
+        for (int i = 0; i < listingID.size(); i++) {
+            Listings listing = new Listings(
+                    listingID.get(i),
+                    userID.get(i),
+                    ISBN.get(i),
+                    title.get(i),
+                    quality.get(i),
+                    price.get(i),
+                    course.get(i),
+                    semester.get(i),
+                    yearPublished.get(i),
+                    authors.get(i),
+                    professors.get(i));
+            listings.add(listing);
+        }
 
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                JSONArray listingsJSON = null;
-                try {
-                    listingsJSON = new JSONArray(new String(responseBody));
-                    for (int i = 0; i < listingsJSON.length(); i++) {
-                        JSONObject listingsObject = listingsJSON.getJSONObject(i);
-
-                        Listings listing = new Listings(
-                                listingsObject.getString("listingID"),
-                                listingsObject.getString("userID"),
-                                listingsObject.getString("ISBN"),
-                                listingsObject.getString("title"),
-                                listingsObject.getString("quality"),
-                                listingsObject.getString("price"),
-                                listingsObject.getString("course"),
-                                listingsObject.getString("semester"),
-                                listingsObject.getString("yearPublished"),
-                                listingsObject.getString("authors"),
-                                listingsObject.getString("professors"));
-
-                        // add it to the array list
-                        listings.add(listing);
-                    }
-
-                } catch (
-                        JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-
-            }
-        });
-
-        // create adapter to pass in the data
+        // call adapter
         MyListingsAdapter adapter = new MyListingsAdapter(listings);
-        // attach the adapter to the recycler view to populate
         recyclerView.setAdapter(adapter);
-        // define where to add the layout manager
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        // you need a layout manager, otherwise your recycler view is not going to show
 
         button_add = findViewById(R.id.button_add);
         button_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            launchCreateActivity(v);
+                launchCreateActivity(v);
             }
         });
     }
+
     public void launchCreateActivity(View view) {
         Intent intent = new Intent(this, CreateActivity.class);
         startActivity(intent);
