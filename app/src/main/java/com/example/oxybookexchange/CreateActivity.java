@@ -2,10 +2,12 @@ package com.example.oxybookexchange;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -65,7 +67,14 @@ public class CreateActivity extends AppCompatActivity {
         button_create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                title = input_isbn.getText().toString();
+
+                if(!TextUtils.isEmpty(input_isbn.getText().toString()) && !TextUtils.isEmpty(input_title.getText().toString()) &&
+                        !TextUtils.isEmpty(input_quality.getText().toString()) && !TextUtils.isEmpty(input_price.getText().toString()) &&
+                        !TextUtils.isEmpty(input_course.getText().toString()) && !TextUtils.isEmpty(input_semester.getText().toString()) &&
+                        !TextUtils.isEmpty(input_authors.getText().toString()) && !TextUtils.isEmpty(input_yearPublished.getText().toString()) &&
+                        !TextUtils.isEmpty(input_professors.getText().toString())) {
+
+                title = input_title.getText().toString();
                 quality = input_quality.getText().toString();
                 price = input_price.getText().toString();
                 course = input_course.getText().toString();
@@ -91,21 +100,26 @@ public class CreateActivity extends AppCompatActivity {
                         Map<String, String> MyData = new HashMap<String, String>();
                         MyData.put("listingID", "0"); //Add the data you'd like to send to the server.
                         MyData.put("userID", "1000");
-                        MyData.put("ISBN", "9780385339032");
-                        MyData.put("title", "Screenplay: The Foundations of Screenwriting");
-                        MyData.put("quality", "like new");
-                        MyData.put("price", "10.00");
-                        MyData.put("course", "MAC 320");
-                        MyData.put("semester", "Spring 2021");
-                        MyData.put("authors", "Syd Field");
-                        MyData.put("professors", "Williams");
+                        MyData.put("ISBN", ISBN);
+                        MyData.put("title", title);
+                        MyData.put("quality", quality);
+                        MyData.put("price", price);
+                        MyData.put("course", course);
+                        MyData.put("semester", semester);
+                        MyData.put("yearPublished", yearPublished);
+                        MyData.put("authors", authors);
+                        MyData.put("professors", professors);
 
                         return MyData;
                     }
                 };
                 MyRequestQueue.add(MyStringRequest);
             }
+            else {
+                    Toast.makeText(CreateActivity.this, "Please fill in all sections.", Toast.LENGTH_LONG).show();
+            }}
         });
+
     }
 
     private void autofill(String ISBN) {
@@ -120,10 +134,21 @@ public class CreateActivity extends AppCompatActivity {
                 try {
                     JSONObject json = new JSONObject(new String(responseBody));
                     input_title.setText(json.getString("title"));
-                    input_authors.setText(json.getString("by_statement"));
-                    input_yearPublished.setText(json.getString("publish_date"));
-
                 } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    JSONObject json = new JSONObject(new String(responseBody));
+                    input_authors.setText(json.getString("by_statement"));
+                }
+                catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    JSONObject json = new JSONObject(new String(responseBody));
+                    input_yearPublished.setText(json.getString("publish_date"));
+                }
+                catch (JSONException e) {
                     e.printStackTrace();
                 }
             }

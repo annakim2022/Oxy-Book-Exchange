@@ -52,7 +52,7 @@ public class MyListingsAdapter extends RecyclerView.Adapter<MyListingsAdapter.Vi
         holder.textView_profLast.setText(listing.getProfessors());
         holder.textView_semester.setText(listing.getSemester());
         holder.textView_quality.setText(listing.getQuality());
-        holder.textView_price.setText(listing.getPrice());
+        holder.textView_price.setText("$" + listing.getPrice());
         ISBN = listing.getISBN();
         quality = listing.getQuality();
         price = listing.getPrice();
@@ -66,7 +66,6 @@ public class MyListingsAdapter extends RecyclerView.Adapter<MyListingsAdapter.Vi
 //            professors += ", " + listing.getProfLast3() ;
 //        };
 
-        Log.e("HERE1", ISBN);
         holder.button_editInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,7 +77,6 @@ public class MyListingsAdapter extends RecyclerView.Adapter<MyListingsAdapter.Vi
                 intent.putExtra("course", course);
                 intent.putExtra("semester", semester);
                 intent.putExtra("professors", professors);
-                Log.e("HERE", professors);
 
                 holder.button_editInfo.getContext().startActivity(intent);
             }

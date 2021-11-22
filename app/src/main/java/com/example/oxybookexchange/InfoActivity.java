@@ -32,11 +32,9 @@ public class InfoActivity extends AppCompatActivity {
     private TextView TVcourse;
     private TextView TVsemester;
     private TextView TVprofessors;
-    private String title, authors, year, quality, price, course, semester, professors;
+    private String ISBN, title, year, quality, price, course, semester, authors, professors;
     private Button button_backToListings;
 
-    private String api_url;
-    private String ISBN;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,61 +43,37 @@ public class InfoActivity extends AppCompatActivity {
         AsyncHttpClient client = new AsyncHttpClient();
 
         Intent intent = getIntent();
+
         ISBN = intent.getStringExtra("ISBN");
-        api_url = "https://openlibrary.org/isbn/" + ISBN + ".json";
-        Log.e("HERE3", api_url);
+        title = intent.getStringExtra("title");
+        quality = intent.getStringExtra("quality");
+        price = intent.getStringExtra("price");
+        course = intent.getStringExtra("course");
+        semester = intent.getStringExtra("semester");
+        authors = intent.getStringExtra("authors");
+        professors = intent.getStringExtra("professors");
+        year = intent.getStringExtra("yearPublished");
 
-        client.get(api_url, new AsyncHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                Log.e("HERE", api_url);
-                try {
-                    JSONObject json = new JSONObject(new String(responseBody));
-                    title = json.getString("title");
-//                    JSONArray publisherArray = json.getJSONArray("publishers");
-//                    publishers = publisherArray.getString(0);
-//                    for (int i = 1; i < publisherArray.length(); i++){
-//                        publishers += ", " + publisherArray.getString(1);
-//                    }
-                    authors = json.getString("by_statement");
-                    year = json.getString("publish_date");
-                    quality = intent.getStringExtra("quality");
-                    price = intent.getStringExtra("price");
-                    course = intent.getStringExtra("course");
-                    semester = intent.getStringExtra("semester");
-                    professors = intent.getStringExtra("professors");
+        TVtitle = findViewById(R.id.title);
+        TVisbn = findViewById(R.id.isbn);
+        TVauthors = findViewById(R.id.authors);
+        TVyear = findViewById(R.id.year);
+        TVquality = findViewById(R.id.quality);
+        TVprice = findViewById(R.id.price);
+        TVcourse = findViewById(R.id.course);
+        TVsemester = findViewById(R.id.semester);
+        TVprofessors = findViewById(R.id.professors);
 
-                    TVtitle = findViewById(R.id.title);
-                    TVisbn = findViewById(R.id.isbn);
-                    TVauthors= findViewById(R.id.authors);
-                    TVyear = findViewById(R.id.year);
-                    TVquality = findViewById(R.id.quality);
-                    TVprice = findViewById(R.id.price);
-                    TVcourse = findViewById(R.id.course);
-                    TVsemester = findViewById(R.id.semester);
-                    TVprofessors = findViewById(R.id.professors);
+        TVtitle.setText(title);
+        TVisbn.setText(ISBN);
+        TVauthors.setText(authors);
+        TVyear.setText(year);
+        TVquality.setText(quality);
+        TVprice.setText("$" + price);
+        TVcourse.setText(course);
+        TVsemester.setText(semester);
+        TVprofessors.setText(professors);
 
-
-                    TVtitle.setText(title);
-                    TVisbn.setText(ISBN);
-                    TVauthors.setText(authors);
-                    TVyear.setText(year);
-                    TVquality.setText(quality);
-                    TVprice.setText(price);
-                    TVcourse.setText(course);
-                    TVsemester.setText(semester);
-                    TVprofessors.setText(professors);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-            }
-        });
 
         button_backToListings = findViewById(R.id.button_backToListings);
         button_backToListings.setOnClickListener(new View.OnClickListener() {
@@ -108,12 +82,9 @@ public class InfoActivity extends AppCompatActivity {
                 goBack(v);
             }
         });
-
     }
 
-
-
-    private void goBack(View v){
+    private void goBack(View v) {
 //        Intent intent = new Intent(this, ListingsActivity.class);
 //        startActivityForResult(intent, 1);
         finish();

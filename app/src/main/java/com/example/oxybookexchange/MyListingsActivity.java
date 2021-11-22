@@ -4,9 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.SearchView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,12 +24,18 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import cz.msebera.android.httpclient.Header;
 
 public class MyListingsActivity extends AppCompatActivity {
 
+    // create button
     private Button button_add;
+
+    // search view
+    private SearchView filter;
+
     // spinner
     ArrayAdapter<String> searchAdapter;
     Spinner spinnerSearchMy;
@@ -35,27 +44,18 @@ public class MyListingsActivity extends AppCompatActivity {
     // recycler view
     private RecyclerView recyclerView;
     private ArrayList<Listings> listings;
+    private ArrayList<Listings> displayedListings;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mylistings);
 
-        // spinner
-        spinnerSearchMy = findViewById(R.id.spinner_searchMy);
-        searchList.add("ISBN");
-        searchList.add("Title");
-        searchList.add("Author");
-        searchList.add("Course");
-        searchList.add("Professor");
-        searchAdapter = new ArrayAdapter<>(MyListingsActivity.this, android.R.layout.simple_spinner_item, searchList);
-        searchAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerSearchMy.setAdapter(searchAdapter);
-
         // recycler view
         Intent intent = getIntent();
         recyclerView = findViewById(R.id.recyclerView_myListings);
         listings = new ArrayList<>();
+        displayedListings = new ArrayList<>();
         ArrayList<String> listingID = intent.getStringArrayListExtra("listingID");
         ArrayList<String> userID = intent.getStringArrayListExtra("userID");
         ArrayList<String> ISBN = intent.getStringArrayListExtra("ISBN");
@@ -82,10 +82,175 @@ public class MyListingsActivity extends AppCompatActivity {
                     authors.get(i),
                     professors.get(i));
             listings.add(listing);
+            displayedListings.add(listing);
         }
 
+        // spinner
+        spinnerSearchMy = findViewById(R.id.spinner_searchMy);
+        searchList.add("ISBN");
+        searchList.add("Title");
+        searchList.add("Author");
+        searchList.add("Professor");
+        searchAdapter = new ArrayAdapter<>(MyListingsActivity.this, android.R.layout.simple_spinner_item, searchList);
+        searchAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerSearchMy.setAdapter(searchAdapter);
+
+        // search view
+        filter = findViewById(R.id.searchView_myListings);
+        spinnerSearchMy.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                // On selecting a spinner item
+                String item = parent.getItemAtPosition(position).toString();
+                if (item == "ISBN") {
+                    filter.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                        @Override
+                        public boolean onQueryTextSubmit(String query) {
+                            return true;
+                        }
+
+                        @Override
+                        public boolean onQueryTextChange(String newText) {
+                            if (!newText.isEmpty()) {
+                                // clear recycler view
+                                newText = newText.toLowerCase();
+                                displayedListings.clear();
+                                for (int i = 0; i < listings.size(); i++) {
+                                    if (listings.get(i).getISBN().toLowerCase().contains(newText)) {
+                                        // display in recycler view
+                                        displayedListings.add(listings.get(i));
+
+                                    }
+                                    Objects.requireNonNull(recyclerView.getAdapter()).notifyDataSetChanged();
+                                }
+
+                            } else {
+                                // clear recycler view
+                                // add all to recycler view
+                                displayedListings.clear();
+                                displayedListings.addAll(listings);
+
+                                Objects.requireNonNull(recyclerView.getAdapter()).notifyDataSetChanged();
+                            }
+                            return true;
+                        }
+                    });
+
+                } else if (item == "Title") {
+
+                    filter.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                        @Override
+                        public boolean onQueryTextSubmit(String query) {
+                            return true;
+                        }
+
+                        @Override
+                        public boolean onQueryTextChange(String newText) {
+                            if (!newText.isEmpty()) {
+                                // clear recycler view
+                                newText = newText.toLowerCase();
+                                displayedListings.clear();
+                                for (int i = 0; i < listings.size(); i++) {
+                                    if (listings.get(i).getTitle().toLowerCase().contains(newText)) {
+                                        // display in recycler view
+                                        displayedListings.add(listings.get(i));
+
+                                    }
+                                    Objects.requireNonNull(recyclerView.getAdapter()).notifyDataSetChanged();
+                                }
+
+                            } else {
+                                // clear recycler view
+                                // add all to recycler view
+                                displayedListings.clear();
+                                displayedListings.addAll(listings);
+
+                                Objects.requireNonNull(recyclerView.getAdapter()).notifyDataSetChanged();
+                            }
+                            return true;
+                        }
+                    });
+                } else if (item == "Author") {
+                    filter.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                        @Override
+                        public boolean onQueryTextSubmit(String query) {
+                            return true;
+                        }
+
+                        @Override
+                        public boolean onQueryTextChange(String newText) {
+                            if (!newText.isEmpty()) {
+                                // clear recycler view
+                                newText = newText.toLowerCase();
+                                displayedListings.clear();
+                                for (int i = 0; i < listings.size(); i++) {
+                                    if (listings.get(i).getAuthors().toLowerCase().contains(newText)) {
+                                        // display in recycler view
+                                        displayedListings.add(listings.get(i));
+
+                                    }
+                                    Objects.requireNonNull(recyclerView.getAdapter()).notifyDataSetChanged();
+                                }
+
+                            } else {
+                                // clear recycler view
+                                // add all to recycler view
+                                displayedListings.clear();
+                                displayedListings.addAll(listings);
+
+                                Objects.requireNonNull(recyclerView.getAdapter()).notifyDataSetChanged();
+                            }
+                            return true;
+                        }
+                    });
+
+                } else if (item == "Professor") {
+                    filter.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                        @Override
+                        public boolean onQueryTextSubmit(String query) {
+                            return true;
+                        }
+
+                        @Override
+                        public boolean onQueryTextChange(String newText) {
+                            if (!newText.isEmpty()) {
+                                // clear recycler view
+                                newText = newText.toLowerCase();
+                                displayedListings.clear();
+                                for (int i = 0; i < listings.size(); i++) {
+                                    if (listings.get(i).getProfessors().toLowerCase().contains(newText)) {
+                                        // display in recycler view
+                                        displayedListings.add(listings.get(i));
+
+                                    }
+                                    Objects.requireNonNull(recyclerView.getAdapter()).notifyDataSetChanged();
+                                }
+
+                            } else {
+                                // clear recycler view
+                                // add all to recycler view
+                                displayedListings.clear();
+                                displayedListings.addAll(listings);
+
+                                Objects.requireNonNull(recyclerView.getAdapter()).notifyDataSetChanged();
+                            }
+                            return true;
+                        }
+                    });
+                }
+
+                // Showing selected spinner item
+                Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+            }
+
+            public void onNothingSelected(AdapterView<?> arg0) {
+                // TODO Auto-generated method stub
+            }
+        });
+
+
         // call adapter
-        MyListingsAdapter adapter = new MyListingsAdapter(listings);
+        MyListingsAdapter adapter = new MyListingsAdapter(displayedListings);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 

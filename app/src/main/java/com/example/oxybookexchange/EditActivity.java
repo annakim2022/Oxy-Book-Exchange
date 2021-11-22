@@ -2,14 +2,23 @@ package com.example.oxybookexchange;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.android.material.textfield.TextInputEditText;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
@@ -17,96 +26,92 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import cz.msebera.android.httpclient.Header;
 
 public class EditActivity extends AppCompatActivity {
-    private TextView TVtitle;
-    private TextView TVisbn;
-    private TextView TVauthors;
-    private TextView TVyear;
-    private TextView TVquality;
-    private TextView TVprice;
-    private TextView TVcourse;
-    private TextView TVsemester;
-    private TextView TVprofessors;
-    private String title, publishers, authors, year, quality, price, course, semester, professors;
-    private Button button_backToListings;
-
-    private String api_url;
-    private String ISBN;
+    private TextInputEditText input_isbn, input_title, input_quality, input_price, input_course, input_semester, input_professors, input_authors, input_yearPublished;
+    private String ISBN, title, authors, yearPublished, quality, price, course, semester, professors;
+    private Button button_update;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit);
-        AsyncHttpClient client = new AsyncHttpClient();
+        setContentView(R.layout.activity_create);
 
-        Intent intent = getIntent();
-        ISBN = intent.getStringExtra("ISBN");
-        api_url = "https://openlibrary.org/isbn/" + ISBN + ".json";
-        Log.e("HERE3", api_url);
+        RequestQueue MyRequestQueue = Volley.newRequestQueue(this);
 
-        client.get(api_url, new AsyncHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                Log.e("HERE", api_url);
-                try {
-                    JSONObject json = new JSONObject(new String(responseBody));
-                    title = json.getString("title");
-                    authors = json.getString("by_statement");
-                    year = json.getString("publish_date");
-                    quality = intent.getStringExtra("quality");
-                    price = intent.getStringExtra("price");
-                    course = intent.getStringExtra("course");
-                    semester = intent.getStringExtra("semester");
-                    professors = intent.getStringExtra("professors");
-
-                    TVtitle = findViewById(R.id.title);
-                    TVisbn = findViewById(R.id.isbn);
-                    TVauthors= findViewById(R.id.authors);
-                    TVyear = findViewById(R.id.year);
-                    TVquality = findViewById(R.id.quality);
-                    TVprice = findViewById(R.id.price);
-                    TVcourse = findViewById(R.id.course);
-                    TVsemester = findViewById(R.id.semester);
-                    TVprofessors = findViewById(R.id.professors);
+        input_isbn = findViewById(R.id.input_isbn2);
+        input_title = findViewById(R.id.input_title2);
+        input_quality = findViewById(R.id.input_quality2);
+        input_price = findViewById(R.id.input_price2);
+        input_course = findViewById(R.id.input_course2);
+        input_semester = findViewById(R.id.input_semester2);
+        input_authors = findViewById(R.id.input_authors2);
+        input_yearPublished = findViewById(R.id.input_yearPublished2);
+        input_professors = findViewById(R.id.input_professors2);
 
 
-                    TVtitle.setText(title);
-                    TVisbn.setText(ISBN);
-                    TVauthors.setText(authors);
-                    TVyear.setText(year);
-                    TVquality.setText(quality);
-                    TVprice.setText(price);
-                    TVcourse.setText(course);
-                    TVsemester.setText(semester);
-                    TVprofessors.setText(professors);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-            }
-        });
-
-        button_backToListings = findViewById(R.id.button_backToListings);
-        button_backToListings.setOnClickListener(new View.OnClickListener() {
+        button_update = findViewById(R.id.button_update);
+        button_update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goBack(v);
-            }
+
+                if(!TextUtils.isEmpty(input_isbn.getText().toString()) && !TextUtils.isEmpty(input_title.getText().toString()) &&
+                        !TextUtils.isEmpty(input_quality.getText().toString()) && !TextUtils.isEmpty(input_price.getText().toString()) &&
+                        !TextUtils.isEmpty(input_course.getText().toString()) && !TextUtils.isEmpty(input_semester.getText().toString()) &&
+                        !TextUtils.isEmpty(input_authors.getText().toString()) && !TextUtils.isEmpty(input_yearPublished.getText().toString()) &&
+                        !TextUtils.isEmpty(input_professors.getText().toString())) {
+
+                    ISBN = input_isbn.getText().toString();
+                    title = input_title.getText().toString();
+                    quality = input_quality.getText().toString();
+                    price = input_price.getText().toString();
+                    course = input_course.getText().toString();
+                    semester = input_semester.getText().toString();
+                    authors = input_authors.getText().toString();
+                    yearPublished = input_yearPublished.getText().toString();
+                    professors = input_professors.getText().toString();
+
+                    String url = "http://134.69.236.202:3308/newlisting";
+                    StringRequest MyStringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            //This code is executed if the server responds, whether or not the response contains data.
+                            //The String 'response' contains the server's response.
+                        }
+                    }, new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            //This code is executed if there is an error.
+                        }
+                    }) {
+                        protected Map<String, String> getParams() {
+                            Map<String, String> MyData = new HashMap<String, String>();
+                            MyData.put("listingID", "0"); //Add the data you'd like to send to the server.
+                            MyData.put("userID", "1000");
+                            MyData.put("ISBN", ISBN);
+                            MyData.put("title", title);
+                            MyData.put("quality", quality);
+                            MyData.put("price", price);
+                            MyData.put("course", course);
+                            MyData.put("semester", semester);
+                            MyData.put("yearPublished", yearPublished);
+                            MyData.put("authors", authors);
+                            MyData.put("professors", professors);
+
+                            return MyData;
+                        }
+                    };
+                    MyRequestQueue.add(MyStringRequest);
+                }
+                else {
+                    Toast.makeText(EditActivity.this, "Please fill in all sections.", Toast.LENGTH_LONG).show();
+                }}
         });
 
     }
 
-
-    private void goBack(View v){
-//        Intent intent = new Intent(this, ListingsActivity.class);
-//        startActivityForResult(intent, 1);
-        finish();
-    }
 }

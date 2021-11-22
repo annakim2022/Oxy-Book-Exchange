@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,7 +17,12 @@ import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.Api;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
@@ -31,9 +37,11 @@ import cz.msebera.android.httpclient.auth.AUTH;
 
 public class MenuActivity extends AppCompatActivity {
     private static AsyncHttpClient client = new AsyncHttpClient();
+    GoogleSignInClient googleSignInClient;
     Button button_buy;
     Button button_sell;
-    Button button_account;
+    Button button_signout;
+//    Button button_account;
     private ArrayList<String> listingID, userID, ISBN, title, quality, price, course, semester, yearPublished, authors, professors;
 //    private static AsyncHttpClient client = new AsyncHttpClient();
 
@@ -47,7 +55,7 @@ public class MenuActivity extends AppCompatActivity {
         //set buttons
         button_buy = findViewById(R.id.button_buy);
         button_sell = findViewById(R.id.button_sell);
-        button_account = findViewById(R.id.button_account);
+//        button_account = findViewById(R.id.button_account);
 
         button_buy.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,12 +72,27 @@ public class MenuActivity extends AppCompatActivity {
             }
         });
 
-        button_account.setOnClickListener(new View.OnClickListener() {
+        button_signout = findViewById(R.id.button_sign_out);
+        button_signout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                launchAccountActivity(v);
+                switch (v.getId()) {
+                    // ...
+                    case R.id.button_sign_out:
+                        signOut();
+                        break;
+                    // ...
+                }
             }
+
         });
+
+//        button_account.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                launchAccountActivity(v);
+//            }
+//        });
 
     }
 
@@ -201,8 +224,25 @@ public class MenuActivity extends AppCompatActivity {
         );
     }
 
-    public void launchAccountActivity(View view) {
-        Intent intent = new Intent(this, AccountActivity.class);
+    private void signOut() {
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        googleSignInClient = GoogleSignIn.getClient(this, gso);
+        googleSignInClient.signOut().addOnCompleteListener(this, new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                launchLoginActivity();
+            }
+        });
+    }
+    public void launchLoginActivity() {
+        Intent intent = new Intent(this, SignInActivity.class);
         startActivity(intent);
     }
+
+//    public void launchAccountActivity(View view) {
+//        Intent intent = new Intent(this, AccountActivity.class);
+//        startActivity(intent);
+//    }
 }

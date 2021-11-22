@@ -27,21 +27,22 @@
     <Spinner
         android:id="@+id/spinner_search"
         android:layout_width="0dp"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/recyclerView_listings"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView_listingsTitle"
         tools:ignore="SpeakableTextPresentCheck" />
 
-
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/textInputEditText"
+    <SearchView
+        android:id="@+id/searchView_listings"
         android:layout_width="0dp"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:hint="Search..."
+        android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toStartOf="@+id/spinner_search"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView_listingsTitle" />
@@ -58,7 +59,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner_search"
+        app:layout_constraintTop_toBottomOf="@+id/searchView_listings"
         app:layout_constraintVertical_bias="1.0" />
 
 

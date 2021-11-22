@@ -20,7 +20,7 @@ import java.util.List;
 public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.ViewHolder> {
 
     private List<Listings> listings;
-    private String ISBN, quality, price, course, semester, professors;
+    private String ISBN, title, quality, price, course, semester, authors, professors, year;
 
     // pass this list into the constructor of the adapter
     public ListingsAdapter(List<Listings> listings) {
@@ -55,13 +55,16 @@ public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.ViewHo
         holder.textView_profLast.setText(listing.getProfessors());
         holder.textView_semester.setText(listing.getSemester());
         holder.textView_quality.setText(listing.getQuality());
-        holder.textView_price.setText(listing.getPrice());
+        holder.textView_price.setText("$" + listing.getPrice());
         ISBN = listing.getISBN();
+        title = listing.getTitle();
         quality = listing.getQuality();
         price = listing.getPrice();
         course = listing.getCourse();
         semester = listing.getSemester();
+        authors = listing.getAuthors();
         professors = listing.getProfessors();
+        year = listing.getYearPublished();
 //        if (!listing.getProfLast2().equals("null")) {
 //            professors += ", " + listing.getProfLast2() ;
 //        };
@@ -69,19 +72,20 @@ public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.ViewHo
 //            professors += ", " + listing.getProfLast3() ;
 //        };
 
-        Log.e("HERE1", ISBN);
         holder.button_moreInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(holder.button_moreInfo.getContext(), InfoActivity.class);
 //            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("ISBN", ISBN);
+                intent.putExtra("title", title);
                 intent.putExtra("quality", quality);
                 intent.putExtra("price", price);
                 intent.putExtra("course", course);
                 intent.putExtra("semester", semester);
+                intent.putExtra("authors", authors);
                 intent.putExtra("professors", professors);
-                Log.e("HERE", professors);
+                intent.putExtra("yearPublished", year);
 
                 holder.button_moreInfo.getContext().startActivity(intent);
             }
