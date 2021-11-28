@@ -53,6 +53,8 @@ public class MyListingsActivity extends AppCompatActivity {
 
         // recycler view
         Intent intent = getIntent();
+        String email = intent.getStringExtra("email");
+        Log.e("EMAIL", email);
         recyclerView = findViewById(R.id.recyclerView_myListings);
         listings = new ArrayList<>();
         displayedListings = new ArrayList<>();
@@ -84,8 +86,6 @@ public class MyListingsActivity extends AppCompatActivity {
             listings.add(listing);
             displayedListings.add(listing);
         }
-        // send info to edit activity
-
 
         // spinner
         spinnerSearchMy = findViewById(R.id.spinner_searchMy);
@@ -242,7 +242,7 @@ public class MyListingsActivity extends AppCompatActivity {
                 }
 
                 // Showing selected spinner item
-                Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+//                Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
             }
 
             public void onNothingSelected(AdapterView<?> arg0) {
@@ -259,13 +259,15 @@ public class MyListingsActivity extends AppCompatActivity {
         button_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                launchCreateActivity(v);
+                launchCreateActivity(v, email);
             }
         });
     }
 
-    public void launchCreateActivity(View view) {
+    public void launchCreateActivity(View view, String email) {
         Intent intent = new Intent(this, CreateActivity.class);
+        Log.e("email at my listings", email);
+        intent.putExtra("email", email);
         startActivity(intent);
     }
 }

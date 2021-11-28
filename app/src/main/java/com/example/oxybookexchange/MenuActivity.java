@@ -179,7 +179,6 @@ public class MenuActivity extends AppCompatActivity {
         authors = new ArrayList<>();
         professors = new ArrayList<>();
 
-
         Log.e("MENU", email);
         String api_url = "http://134.69.236.202:3308/listings/" + email;
 
@@ -217,6 +216,7 @@ public class MenuActivity extends AppCompatActivity {
                             intent.putExtra("yearPublished", yearPublished);
                             intent.putExtra("authors", authors);
                             intent.putExtra("professors", professors);
+                            intent.putExtra("email", email);
                             startActivity(intent);
 
                         } catch (JSONException e) {

@@ -34,7 +34,7 @@ import cz.msebera.android.httpclient.Header;
 public class EditActivity extends AppCompatActivity {
     private TextInputEditText input_isbn, input_title, input_quality, input_price, input_course, input_semester, input_professors, input_authors, input_yearPublished;
     private String ISBN, title, authors, yearPublished, quality, price, course, semester, professors;
-    private Button button_update;
+    private Button button_update, button_delete;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -129,12 +129,52 @@ public class EditActivity extends AppCompatActivity {
                         }
                     };
                     MyRequestQueue.add(MyStringRequest);
-
                     returnToMenu(email);
                 }
                 else {
                     Toast.makeText(EditActivity.this, "Please fill in all sections.", Toast.LENGTH_LONG).show();
                 }}
+        });
+
+        button_delete = findViewById(R.id.button_delete);
+        button_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                    String url = "http://134.69.236.202:3308/deletelisting";
+                    StringRequest MyStringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            //This code is executed if the server responds, whether or not the response contains data.
+                            //The String 'response' contains the server's response.
+                        }
+                    }, new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            //This code is executed if there is an error.
+                        }
+                    }) {
+                        protected Map<String, String> getParams() {
+                            Map<String, String> MyData = new HashMap<String, String>();
+                            MyData.put("listingID", listingID); //Add the data you'd like to send to the server.
+//                            MyData.put("userEmail", email);
+//                            MyData.put("ISBN", ISBN);
+//                            MyData.put("title", title);
+//                            MyData.put("quality", quality);
+//                            MyData.put("price", price);
+//                            MyData.put("course", course);
+//                            MyData.put("semester", semester);
+//                            MyData.put("yearPublished", yearPublished);
+//                            MyData.put("authors", authors);
+//                            MyData.put("professors", professors);
+                            return MyData;
+                        }
+                    };
+                    MyRequestQueue.add(MyStringRequest);
+                    Toast.makeText(EditActivity.this, "Success!", Toast.LENGTH_LONG).show();
+                    returnToMenu(email);
+
+                }
         });
 
     }

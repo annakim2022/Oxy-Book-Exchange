@@ -263,7 +263,7 @@ public class ListingsActivity extends AppCompatActivity {
                 }
 
                 // Showing selected spinner item
-                Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+//                Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
             }
 
             public void onNothingSelected(AdapterView<?> arg0) {

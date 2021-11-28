@@ -40,7 +40,6 @@ public class InfoActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info);
-        AsyncHttpClient client = new AsyncHttpClient();
 
         Intent intent = getIntent();
 

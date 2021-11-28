@@ -26,6 +26,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,7 +34,7 @@ import cz.msebera.android.httpclient.Header;
 
 public class CreateActivity extends AppCompatActivity {
     private TextInputEditText input_isbn, input_title, input_quality, input_price, input_course, input_semester, input_professors, input_authors, input_yearPublished;
-    private String ISBN, title, authors, yearPublished, quality, price, course, semester, professors, userEmail;
+    private String ISBN, title, authors, yearPublished, quality, price, course, semester, professors, email;
     private Button button_autofill, button_create;
     private String api_url;
 
@@ -41,6 +42,9 @@ public class CreateActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create);
+
+        Intent intent = getIntent();
+        String email = intent.getStringExtra("email");
 
         RequestQueue MyRequestQueue = Volley.newRequestQueue(this);
 
@@ -99,7 +103,7 @@ public class CreateActivity extends AppCompatActivity {
                     protected Map<String, String> getParams() {
                         Map<String, String> MyData = new HashMap<String, String>();
                         MyData.put("listingID", "0"); //Add the data you'd like to send to the server.
-                        MyData.put("userEmail", userEmail);
+                        MyData.put("userEmail", email);
                         MyData.put("ISBN", ISBN);
                         MyData.put("title", title);
                         MyData.put("quality", quality);
@@ -114,6 +118,8 @@ public class CreateActivity extends AppCompatActivity {
                     }
                 };
                 MyRequestQueue.add(MyStringRequest);
+                Toast.makeText(CreateActivity.this, "Success!", Toast.LENGTH_LONG).show();
+                returnToMenu(email);
             }
             else {
                     Toast.makeText(CreateActivity.this, "Please fill in all sections.", Toast.LENGTH_LONG).show();
@@ -158,5 +164,9 @@ public class CreateActivity extends AppCompatActivity {
             }
         });
     }
-
+    private void returnToMenu(String email){
+        Intent intent = new Intent(this, MenuActivity.class);
+        intent.putExtra("email", email);
+        startActivity(intent);
+    }
 }
