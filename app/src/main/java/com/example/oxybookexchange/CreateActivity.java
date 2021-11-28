@@ -33,7 +33,7 @@ import cz.msebera.android.httpclient.Header;
 
 public class CreateActivity extends AppCompatActivity {
     private TextInputEditText input_isbn, input_title, input_quality, input_price, input_course, input_semester, input_professors, input_authors, input_yearPublished;
-    private String ISBN, title, authors, yearPublished, quality, price, course, semester, professors;
+    private String ISBN, title, authors, yearPublished, quality, price, course, semester, professors, userEmail;
     private Button button_autofill, button_create;
     private String api_url;
 
@@ -99,7 +99,7 @@ public class CreateActivity extends AppCompatActivity {
                     protected Map<String, String> getParams() {
                         Map<String, String> MyData = new HashMap<String, String>();
                         MyData.put("listingID", "0"); //Add the data you'd like to send to the server.
-                        MyData.put("userID", "1000");
+                        MyData.put("userEmail", userEmail);
                         MyData.put("ISBN", ISBN);
                         MyData.put("title", title);
                         MyData.put("quality", quality);
@@ -125,12 +125,12 @@ public class CreateActivity extends AppCompatActivity {
     private void autofill(String ISBN) {
         AsyncHttpClient client = new AsyncHttpClient();
         api_url = "https://openlibrary.org/isbn/" + ISBN + ".json";
-        Log.e("HERE3", api_url);
+        Log.e("CREATE", api_url);
 
         client.get(api_url, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                Log.e("HERE", api_url);
+                Log.e("CREATE", api_url);
                 try {
                     JSONObject json = new JSONObject(new String(responseBody));
                     input_title.setText(json.getString("title"));

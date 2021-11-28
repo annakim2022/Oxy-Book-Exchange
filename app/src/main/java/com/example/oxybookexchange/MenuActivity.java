@@ -41,14 +41,18 @@ public class MenuActivity extends AppCompatActivity {
     Button button_buy;
     Button button_sell;
     Button button_signout;
+    String email;
+
 //    Button button_account;
-    private ArrayList<String> listingID, userID, ISBN, title, quality, price, course, semester, yearPublished, authors, professors;
+    private ArrayList<String> listingID, userEmail, ISBN, title, quality, price, course, semester, yearPublished, authors, professors;
 //    private static AsyncHttpClient client = new AsyncHttpClient();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+        Intent intent2 = getIntent();
+        email = intent2.getStringExtra("email");
 
         // GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
 
@@ -72,13 +76,13 @@ public class MenuActivity extends AppCompatActivity {
             }
         });
 
-        button_signout = findViewById(R.id.button_sign_out);
+        button_signout = findViewById(R.id.button_signout);
         button_signout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 switch (v.getId()) {
                     // ...
-                    case R.id.button_sign_out:
+                    case R.id.button_signout:
                         signOut();
                         break;
                     // ...
@@ -100,7 +104,7 @@ public class MenuActivity extends AppCompatActivity {
 
         Intent intent = new Intent(this, ListingsActivity.class);
         listingID = new ArrayList<>();
-        userID = new ArrayList<>();
+        userEmail = new ArrayList<>();
         ISBN = new ArrayList<>();
         title = new ArrayList<>();
         quality = new ArrayList<>();
@@ -123,7 +127,7 @@ public class MenuActivity extends AppCompatActivity {
                             for (int i = 0; i < listingsJSON.length(); i++) {
                                 JSONObject jsonObject = listingsJSON.getJSONObject(i);
                                 listingID.add(jsonObject.getString("listingID"));
-                                userID.add(jsonObject.getString("userID"));
+                                userEmail.add(jsonObject.getString("userEmail"));
                                 ISBN.add(jsonObject.getString("ISBN"));
                                 title.add(jsonObject.getString("title"));
                                 quality.add(jsonObject.getString("quality"));
@@ -136,7 +140,7 @@ public class MenuActivity extends AppCompatActivity {
 
                             }
                             intent.putExtra("listingID", listingID);
-                            intent.putExtra("userID", userID);
+                            intent.putExtra("userEmail", userEmail);
                             intent.putExtra("ISBN", ISBN);
                             intent.putExtra("title", title);
                             intent.putExtra("quality", quality);
@@ -164,7 +168,7 @@ public class MenuActivity extends AppCompatActivity {
     public void launchMyListingsActivity(View view, String s) {
         Intent intent = new Intent(this, MyListingsActivity.class);
         listingID = new ArrayList<>();
-        userID = new ArrayList<>();
+        userEmail = new ArrayList<>();
         ISBN = new ArrayList<>();
         title = new ArrayList<>();
         quality = new ArrayList<>();
@@ -175,7 +179,10 @@ public class MenuActivity extends AppCompatActivity {
         authors = new ArrayList<>();
         professors = new ArrayList<>();
 
-        String api_url = "http://134.69.236.202:3308/listings";
+
+        Log.e("MENU", email);
+        String api_url = "http://134.69.236.202:3308/listings/" + email;
+
 
         client.get(api_url, new AsyncHttpResponseHandler() {
 
@@ -187,7 +194,7 @@ public class MenuActivity extends AppCompatActivity {
                             for (int i = 0; i < myListingsJSON.length(); i++) {
                                 JSONObject jsonObject = myListingsJSON.getJSONObject(i);
                                 listingID.add(jsonObject.getString("listingID"));
-                                userID.add(jsonObject.getString("userID"));
+                                userEmail.add(jsonObject.getString("userEmail"));
                                 ISBN.add(jsonObject.getString("ISBN"));
                                 title.add(jsonObject.getString("title"));
                                 quality.add(jsonObject.getString("quality"));
@@ -200,7 +207,7 @@ public class MenuActivity extends AppCompatActivity {
 
                             }
                             intent.putExtra("listingID", listingID);
-                            intent.putExtra("userID", userID);
+                            intent.putExtra("userEmail", userEmail);
                             intent.putExtra("ISBN", ISBN);
                             intent.putExtra("title", title);
                             intent.putExtra("quality", quality);
@@ -213,6 +220,7 @@ public class MenuActivity extends AppCompatActivity {
                             startActivity(intent);
 
                         } catch (JSONException e) {
+                            launchNoListingsActivity();
                             e.printStackTrace();
                         }
                     }
@@ -241,8 +249,8 @@ public class MenuActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-//    public void launchAccountActivity(View view) {
-//        Intent intent = new Intent(this, AccountActivity.class);
-//        startActivity(intent);
-//    }
+    public void launchNoListingsActivity() {
+        Intent intent = new Intent(this, NoListingsActivity.class);
+        startActivity(intent);
+    }
 }

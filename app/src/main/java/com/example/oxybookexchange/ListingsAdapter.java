@@ -65,18 +65,11 @@ public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.ViewHo
         authors = listing.getAuthors();
         professors = listing.getProfessors();
         year = listing.getYearPublished();
-//        if (!listing.getProfLast2().equals("null")) {
-//            professors += ", " + listing.getProfLast2() ;
-//        };
-//        if (!listing.getProfLast3().equals("null")) {
-//            professors += ", " + listing.getProfLast3() ;
-//        };
 
         holder.button_moreInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(holder.button_moreInfo.getContext(), InfoActivity.class);
-//            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("ISBN", ISBN);
                 intent.putExtra("title", title);
                 intent.putExtra("quality", quality);

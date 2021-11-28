@@ -29,6 +29,8 @@
         <activity android:name=".InfoActivity"/>
         <activity android:name=".CreateActivity"/>
         <activity android:name=".EditActivity"/>
+        <activity android:name=".NoListingsActivity"/>
+
     </application>
 
 </manifest>

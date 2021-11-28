@@ -1,9 +1,11 @@
 package com.example.oxybookexchange;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -14,10 +16,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 public class SignInActivity extends AppCompatActivity {
-    //variables
 
     SignInButton signInButton;
 
@@ -31,7 +33,6 @@ public class SignInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signin);
         //set buttons
-
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -44,11 +45,12 @@ public class SignInActivity extends AppCompatActivity {
                 switch (v.getId()) {
                     case R.id.sign_in_button:
                         signIn();
-                        break;
+
                     // ...
                 }
             }
         });
+
 
     }
 
@@ -59,6 +61,19 @@ public class SignInActivity extends AppCompatActivity {
         updateUI(account);
     }
 
+    private void signOut() {
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        googleSignInClient = GoogleSignIn.getClient(this, gso);
+        googleSignInClient.signOut().addOnCompleteListener(this, new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+               // launchLoginActivity();
+            }
+        });
+    }
+
     private void signIn() {
         Intent signInIntent = googleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, SIGN_IN);
@@ -67,7 +82,6 @@ public class SignInActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
         if (requestCode == SIGN_IN) {
             // The Task returned from this call is always completed, no need to attach
@@ -80,7 +94,6 @@ public class SignInActivity extends AppCompatActivity {
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-
             // Signed in successfully, show authenticated UI.
             updateUI(account);
         } catch (ApiException e) {
@@ -91,14 +104,19 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     public void updateUI(GoogleSignInAccount account){
-
-        if(account != null){
-//            Toast.makeText(this,"Logged in",Toast.LENGTH_LONG).show();
-            startActivity(new Intent(this, MenuActivity.class));
-
-        }else {
-//            Toast.makeText(this,"Logged out",Toast.LENGTH_LONG).show();
+        if (account != null) {
+            String personEmail = account.getEmail();
+            if(personEmail.contains("@oxy.edu")){
+                Log.e("HERE", "oxy email");
+                Intent intent = new Intent(this, MenuActivity.class);
+                intent.putExtra("email", personEmail);
+                startActivity(intent);
+            }
+            else {
+                Toast.makeText(this,"Please enter an Oxy email.",Toast.LENGTH_LONG).show();
+                signOut();
+                Log.e("HERE", "not oxy email");
+            }
         }
-
     }
 }

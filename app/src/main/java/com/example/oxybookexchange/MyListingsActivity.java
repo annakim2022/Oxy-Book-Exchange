@@ -57,7 +57,7 @@ public class MyListingsActivity extends AppCompatActivity {
         listings = new ArrayList<>();
         displayedListings = new ArrayList<>();
         ArrayList<String> listingID = intent.getStringArrayListExtra("listingID");
-        ArrayList<String> userID = intent.getStringArrayListExtra("userID");
+        ArrayList<String> userEmail = intent.getStringArrayListExtra("userEmail");
         ArrayList<String> ISBN = intent.getStringArrayListExtra("ISBN");
         ArrayList<String> title = intent.getStringArrayListExtra("title");
         ArrayList<String> quality = intent.getStringArrayListExtra("quality");
@@ -71,7 +71,7 @@ public class MyListingsActivity extends AppCompatActivity {
         for (int i = 0; i < listingID.size(); i++) {
             Listings listing = new Listings(
                     listingID.get(i),
-                    userID.get(i),
+                    userEmail.get(i),
                     ISBN.get(i),
                     title.get(i),
                     quality.get(i),
@@ -84,6 +84,8 @@ public class MyListingsActivity extends AppCompatActivity {
             listings.add(listing);
             displayedListings.add(listing);
         }
+        // send info to edit activity
+
 
         // spinner
         spinnerSearchMy = findViewById(R.id.spinner_searchMy);
@@ -247,7 +249,6 @@ public class MyListingsActivity extends AppCompatActivity {
                 // TODO Auto-generated method stub
             }
         });
-
 
         // call adapter
         MyListingsAdapter adapter = new MyListingsAdapter(displayedListings);

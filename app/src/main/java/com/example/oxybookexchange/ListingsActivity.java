@@ -72,7 +72,7 @@ public class ListingsActivity extends AppCompatActivity {
         listings = new ArrayList<>();
         displayedListings = new ArrayList<>();
         ArrayList<String> listingID = intent.getStringArrayListExtra("listingID");
-        ArrayList<String> userID = intent.getStringArrayListExtra("userID");
+        ArrayList<String> userEmail = intent.getStringArrayListExtra("userEmail");
         ArrayList<String> ISBN = intent.getStringArrayListExtra("ISBN");
         ArrayList<String> title = intent.getStringArrayListExtra("title");
         ArrayList<String> quality = intent.getStringArrayListExtra("quality");
@@ -86,7 +86,7 @@ public class ListingsActivity extends AppCompatActivity {
         for (int i = 0; i < listingID.size(); i++) {
             Listings listing = new Listings(
                     listingID.get(i),
-                    userID.get(i),
+                    userEmail.get(i),
                     ISBN.get(i),
                     title.get(i),
                     quality.get(i),
@@ -130,10 +130,12 @@ public class ListingsActivity extends AppCompatActivity {
                                 // clear recycler view
                                 newText = newText.toLowerCase();
                                 displayedListings.clear();
+                                Log.e("HERE ", displayedListings.toString());
                                 for (int i = 0; i < listings.size(); i++) {
                                     if (listings.get(i).getISBN().toLowerCase().contains(newText)) {
                                         // display in recycler view
                                         displayedListings.add(listings.get(i));
+                                        Log.e("HERE 2 ", displayedListings.toString());
 
                                     }
                                     Objects.requireNonNull(recyclerView.getAdapter()).notifyDataSetChanged();
@@ -165,10 +167,12 @@ public class ListingsActivity extends AppCompatActivity {
                                 // clear recycler view
                                 newText = newText.toLowerCase();
                                 displayedListings.clear();
+                                Log.e("HERE ", displayedListings.toString());
                                 for (int i = 0; i < listings.size(); i++) {
                                     if (listings.get(i).getTitle().toLowerCase().contains(newText)) {
                                         // display in recycler view
                                         displayedListings.add(listings.get(i));
+                                        Log.e("HERE 2 ", displayedListings.toString());
 
                                     }
                                     Objects.requireNonNull(recyclerView.getAdapter()).notifyDataSetChanged();
@@ -198,10 +202,13 @@ public class ListingsActivity extends AppCompatActivity {
                                 // clear recycler view
                                 newText = newText.toLowerCase();
                                 displayedListings.clear();
+                                Log.e("HERE ", displayedListings.toString());
                                 for (int i = 0; i < listings.size(); i++) {
                                     if (listings.get(i).getAuthors().toLowerCase().contains(newText)) {
                                         // display in recycler view
                                         displayedListings.add(listings.get(i));
+                                        Log.e("HERE 2 ", displayedListings.toString());
+
                                     }
                                     Objects.requireNonNull(recyclerView.getAdapter()).notifyDataSetChanged();
                                 }
@@ -231,10 +238,12 @@ public class ListingsActivity extends AppCompatActivity {
                                 // clear recycler view
                                 newText = newText.toLowerCase();
                                 displayedListings.clear();
+                                Log.e("HERE ", displayedListings.toString());
                                 for (int i = 0; i < listings.size(); i++) {
                                     if (listings.get(i).getProfessors().toLowerCase().contains(newText)) {
                                         // display in recycler view
                                         displayedListings.add(listings.get(i));
+                                        Log.e("HERE 2 ", displayedListings.toString());
 
                                     }
                                     Objects.requireNonNull(recyclerView.getAdapter()).notifyDataSetChanged();

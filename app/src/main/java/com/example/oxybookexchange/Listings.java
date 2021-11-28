@@ -7,7 +7,7 @@ import java.math.BigInteger;
 public class Listings {
 
     private String listingID;
-    private String userID;
+    private String userEmail;
     private String ISBN;
     private String title;
     private String quality;
@@ -19,11 +19,11 @@ public class Listings {
     private String professors;
 
 
-    public Listings(String listingID, String userID, String ISBN, String title, String quality, String price, String course,
+    public Listings(String listingID, String userEmail, String ISBN, String title, String quality, String price, String course,
                     String semester, String yearPublished, String authors, String professors) {
 
         this.listingID = listingID;
-        this.userID = userID;
+        this.userEmail = userEmail;
         this.ISBN = ISBN;
         this.title = title;
         this.quality = quality;
@@ -46,12 +46,11 @@ public class Listings {
         this.listingID = listingID;
     }
 
-    public String getUserID() {
-        return userID;
+    public String getUserEmail() {
+        return userEmail;
     }
-
-    public void setUserID(String userID) {
-        this.userID = userID;
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 
     public String getISBN() {

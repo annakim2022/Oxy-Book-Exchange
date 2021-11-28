@@ -39,7 +39,7 @@ public class EditActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create);
+        setContentView(R.layout.activity_edit);
 
         RequestQueue MyRequestQueue = Volley.newRequestQueue(this);
 
@@ -53,6 +53,30 @@ public class EditActivity extends AppCompatActivity {
         input_yearPublished = findViewById(R.id.input_yearPublished2);
         input_professors = findViewById(R.id.input_professors2);
 
+        // get text from adapter
+        Intent intent = getIntent();
+        String ISBN2 = intent.getStringExtra("ISBN");
+        String title2 = intent.getStringExtra("title");
+        String quality2 =  intent.getStringExtra("quality");
+        String price2 = intent.getStringExtra("price");
+        String course2 = intent.getStringExtra("course");
+        String semester2 = intent.getStringExtra("semester");
+        String authors2 = intent.getStringExtra("authors");
+        String professors2 = intent.getStringExtra("professors");
+        String yearPublished2 = intent.getStringExtra("yearPublished");
+        String email = intent.getStringExtra("email");
+        String listingID = intent.getStringExtra("listingID");
+
+        // set input text to previous info
+        input_isbn.setText(ISBN2);
+        input_title.setText(title2);
+        input_quality.setText(quality2);
+        input_price.setText(price2);
+        input_course.setText(course2);
+        input_semester.setText(semester2);
+        input_authors.setText(authors2);
+        input_professors.setText(professors2);
+        input_yearPublished.setText(yearPublished2);
 
         button_update = findViewById(R.id.button_update);
         button_update.setOnClickListener(new View.OnClickListener() {
@@ -75,7 +99,7 @@ public class EditActivity extends AppCompatActivity {
                     yearPublished = input_yearPublished.getText().toString();
                     professors = input_professors.getText().toString();
 
-                    String url = "http://134.69.236.202:3308/newlisting";
+                    String url = "http://134.69.236.202:3308/updatelisting";
                     StringRequest MyStringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
@@ -90,8 +114,8 @@ public class EditActivity extends AppCompatActivity {
                     }) {
                         protected Map<String, String> getParams() {
                             Map<String, String> MyData = new HashMap<String, String>();
-                            MyData.put("listingID", "0"); //Add the data you'd like to send to the server.
-                            MyData.put("userID", "1000");
+                            MyData.put("listingID", listingID); //Add the data you'd like to send to the server.
+//                            MyData.put("userEmail", email);
                             MyData.put("ISBN", ISBN);
                             MyData.put("title", title);
                             MyData.put("quality", quality);
@@ -101,17 +125,23 @@ public class EditActivity extends AppCompatActivity {
                             MyData.put("yearPublished", yearPublished);
                             MyData.put("authors", authors);
                             MyData.put("professors", professors);
-
                             return MyData;
                         }
                     };
                     MyRequestQueue.add(MyStringRequest);
+
+                    returnToMenu(email);
                 }
                 else {
                     Toast.makeText(EditActivity.this, "Please fill in all sections.", Toast.LENGTH_LONG).show();
                 }}
         });
 
+    }
+    private void returnToMenu(String email){
+        Intent intent = new Intent(this, MenuActivity.class);
+        intent.putExtra("email", email);
+        startActivity(intent);
     }
 
 }
