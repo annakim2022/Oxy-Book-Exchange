@@ -2,6 +2,7 @@ package com.example.oxybookexchange;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -53,8 +54,9 @@ public class MyListingsActivity extends AppCompatActivity {
 
         // recycler view
         Intent intent = getIntent();
-        String email = intent.getStringExtra("email");
-        Log.e("EMAIL", email);
+
+//        String email = intent.getStringExtra("email");
+
         recyclerView = findViewById(R.id.recyclerView_myListings);
         listings = new ArrayList<>();
         displayedListings = new ArrayList<>();
@@ -259,15 +261,15 @@ public class MyListingsActivity extends AppCompatActivity {
         button_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                launchCreateActivity(v, email);
+                launchCreateActivity(v);
             }
         });
     }
 
-    public void launchCreateActivity(View view, String email) {
+    public void launchCreateActivity(View view) {
         Intent intent = new Intent(this, CreateActivity.class);
-        Log.e("email at my listings", email);
-        intent.putExtra("email", email);
+//        Log.e("email at my listings", email);
+//        intent.putExtra("email", email);
         startActivity(intent);
     }
 }

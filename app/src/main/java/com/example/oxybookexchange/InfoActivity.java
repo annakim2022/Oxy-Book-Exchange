@@ -35,7 +35,6 @@ public class InfoActivity extends AppCompatActivity {
     private String ISBN, title, year, quality, price, course, semester, authors, professors;
     private Button button_backToListings;
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,7 +71,6 @@ public class InfoActivity extends AppCompatActivity {
         TVcourse.setText(course);
         TVsemester.setText(semester);
         TVprofessors.setText(professors);
-
 
         button_backToListings = findViewById(R.id.button_backToListings);
         button_backToListings.setOnClickListener(new View.OnClickListener() {

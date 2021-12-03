@@ -2,6 +2,7 @@ package com.example.oxybookexchange;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -34,7 +35,7 @@ import cz.msebera.android.httpclient.Header;
 
 public class CreateActivity extends AppCompatActivity {
     private TextInputEditText input_isbn, input_title, input_quality, input_price, input_course, input_semester, input_professors, input_authors, input_yearPublished;
-    private String ISBN, title, authors, yearPublished, quality, price, course, semester, professors, email;
+    private String ISBN, title, authors, yearPublished, quality, price, course, semester, professors;
     private Button button_autofill, button_create;
     private String api_url;
 
@@ -43,8 +44,10 @@ public class CreateActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create);
 
-        Intent intent = getIntent();
-        String email = intent.getStringExtra("email");
+        String email = PreferenceManager.getDefaultSharedPreferences(this).getString("email", "");
+
+//        Intent intent = getIntent();
+//        String email = intent.getStringExtra("email");
 
         RequestQueue MyRequestQueue = Volley.newRequestQueue(this);
 
@@ -72,58 +75,58 @@ public class CreateActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if(!TextUtils.isEmpty(input_isbn.getText().toString()) && !TextUtils.isEmpty(input_title.getText().toString()) &&
+                if (!TextUtils.isEmpty(input_isbn.getText().toString()) && !TextUtils.isEmpty(input_title.getText().toString()) &&
                         !TextUtils.isEmpty(input_quality.getText().toString()) && !TextUtils.isEmpty(input_price.getText().toString()) &&
                         !TextUtils.isEmpty(input_course.getText().toString()) && !TextUtils.isEmpty(input_semester.getText().toString()) &&
                         !TextUtils.isEmpty(input_authors.getText().toString()) && !TextUtils.isEmpty(input_yearPublished.getText().toString()) &&
                         !TextUtils.isEmpty(input_professors.getText().toString())) {
 
-                title = input_title.getText().toString();
-                quality = input_quality.getText().toString();
-                price = input_price.getText().toString();
-                course = input_course.getText().toString();
-                semester = input_semester.getText().toString();
-                authors = input_authors.getText().toString();
-                yearPublished = input_yearPublished.getText().toString();
-                professors = input_professors.getText().toString();
+                    title = input_title.getText().toString();
+                    quality = input_quality.getText().toString();
+                    price = input_price.getText().toString();
+                    course = input_course.getText().toString();
+                    semester = input_semester.getText().toString();
+                    authors = input_authors.getText().toString();
+                    yearPublished = input_yearPublished.getText().toString();
+                    professors = input_professors.getText().toString();
 
-                String url = "http://134.69.236.202:3308/newlisting";
-                StringRequest MyStringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        //This code is executed if the server responds, whether or not the response contains data.
-                        //The String 'response' contains the server's response.
-                    }
-                }, new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        //This code is executed if there is an error.
-                    }
-                }) {
-                    protected Map<String, String> getParams() {
-                        Map<String, String> MyData = new HashMap<String, String>();
-                        MyData.put("listingID", "0"); //Add the data you'd like to send to the server.
-                        MyData.put("userEmail", email);
-                        MyData.put("ISBN", ISBN);
-                        MyData.put("title", title);
-                        MyData.put("quality", quality);
-                        MyData.put("price", price);
-                        MyData.put("course", course);
-                        MyData.put("semester", semester);
-                        MyData.put("yearPublished", yearPublished);
-                        MyData.put("authors", authors);
-                        MyData.put("professors", professors);
+                    String url = "http://134.69.236.202:3308/newlisting";
+                    StringRequest MyStringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            //This code is executed if the server responds, whether or not the response contains data.
+                            //The String 'response' contains the server's response.
+                        }
+                    }, new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            //This code is executed if there is an error.
+                        }
+                    }) {
+                        protected Map<String, String> getParams() {
+                            Map<String, String> MyData = new HashMap<String, String>();
+                            MyData.put("listingID", "0"); //Add the data you'd like to send to the server.
+                            MyData.put("userEmail", email);
+                            MyData.put("ISBN", ISBN);
+                            MyData.put("title", title);
+                            MyData.put("quality", quality);
+                            MyData.put("price", price);
+                            MyData.put("course", course);
+                            MyData.put("semester", semester);
+                            MyData.put("yearPublished", yearPublished);
+                            MyData.put("authors", authors);
+                            MyData.put("professors", professors);
+                            return MyData;
+                        }
+                    };
+                    MyRequestQueue.add(MyStringRequest);
 
-                        return MyData;
-                    }
-                };
-                MyRequestQueue.add(MyStringRequest);
+                } else {
+                    Toast.makeText(CreateActivity.this, "Please fill in all sections.", Toast.LENGTH_LONG).show();
+                }
                 Toast.makeText(CreateActivity.this, "Success!", Toast.LENGTH_LONG).show();
                 returnToMenu(email);
             }
-            else {
-                    Toast.makeText(CreateActivity.this, "Please fill in all sections.", Toast.LENGTH_LONG).show();
-            }}
         });
 
     }
@@ -146,15 +149,13 @@ public class CreateActivity extends AppCompatActivity {
                 try {
                     JSONObject json = new JSONObject(new String(responseBody));
                     input_authors.setText(json.getString("by_statement"));
-                }
-                catch (JSONException e) {
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
                 try {
                     JSONObject json = new JSONObject(new String(responseBody));
                     input_yearPublished.setText(json.getString("publish_date"));
-                }
-                catch (JSONException e) {
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
@@ -164,7 +165,8 @@ public class CreateActivity extends AppCompatActivity {
             }
         });
     }
-    private void returnToMenu(String email){
+
+    private void returnToMenu(String email) {
         Intent intent = new Intent(this, MenuActivity.class);
         intent.putExtra("email", email);
         startActivity(intent);

@@ -1,7 +1,9 @@
 package com.example.oxybookexchange;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -46,15 +48,19 @@ public class MenuActivity extends AppCompatActivity {
 //    Button button_account;
     private ArrayList<String> listingID, userEmail, ISBN, title, quality, price, course, semester, yearPublished, authors, professors;
 //    private static AsyncHttpClient client = new AsyncHttpClient();
+//
+//    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+//    String email = preferences.getString("userEmail", "");
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+
+        // set email to shared preferences
         Intent intent2 = getIntent();
         email = intent2.getStringExtra("email");
-
-        // GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        PreferenceManager.getDefaultSharedPreferences(this).edit().putString("email", email).apply();
 
         //set buttons
         button_buy = findViewById(R.id.button_buy);
@@ -216,7 +222,7 @@ public class MenuActivity extends AppCompatActivity {
                             intent.putExtra("yearPublished", yearPublished);
                             intent.putExtra("authors", authors);
                             intent.putExtra("professors", professors);
-                            intent.putExtra("email", email);
+//                            intent.putExtra("email", email);
                             startActivity(intent);
 
                         } catch (JSONException e) {

@@ -61,6 +61,7 @@ public class ListingsActivity extends AppCompatActivity {
     private ArrayList<Listings> listings;
     private ArrayList<Listings> displayedListings;
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

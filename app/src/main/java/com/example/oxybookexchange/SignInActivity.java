@@ -33,6 +33,7 @@ public class SignInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signin);
         //set buttons
+
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -82,6 +83,7 @@ public class SignInActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
         if (requestCode == SIGN_IN) {
             // The Task returned from this call is always completed, no need to attach
@@ -94,6 +96,7 @@ public class SignInActivity extends AppCompatActivity {
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+
             // Signed in successfully, show authenticated UI.
             updateUI(account);
         } catch (ApiException e) {
