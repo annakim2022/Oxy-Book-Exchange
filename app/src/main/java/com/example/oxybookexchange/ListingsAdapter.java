@@ -20,7 +20,7 @@ import java.util.List;
 public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.ViewHolder> {
 
     private List<Listings> listings;
-    private String ISBN, title, quality, price, course, semester, authors, professors, year;
+    private String ISBN, title, quality, price, course, semester, authors, professors, email, year;
 
     // pass this list into the constructor of the adapter
     public ListingsAdapter(List<Listings> listings) {
@@ -51,11 +51,9 @@ public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.ViewHo
         Listings listing = listings.get(holder.getAdapterPosition());
         // set the view based on the data and the view names
         holder.textView_title.setText(listing.getTitle());
-        holder.textView_course.setText(listing.getCourse());
-        holder.textView_profLast.setText(listing.getProfessors());
-        holder.textView_semester.setText(listing.getSemester());
         holder.textView_quality.setText(listing.getQuality());
         holder.textView_price.setText("$" + listing.getPrice());
+        holder.textView_authors.setText("by " + listing.getAuthors());
 
         holder.button_moreInfo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,6 +67,7 @@ public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.ViewHo
                 authors = listing.getAuthors();
                 professors = listing.getProfessors();
                 year = listing.getYearPublished();
+                email = listing.getUserEmail();
 
                 Intent intent = new Intent(holder.button_moreInfo.getContext(), InfoActivity.class);
                 intent.putExtra("ISBN", ISBN);
@@ -80,6 +79,7 @@ public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.ViewHo
                 intent.putExtra("authors", authors);
                 intent.putExtra("professors", professors);
                 intent.putExtra("yearPublished", year);
+                intent.putExtra("email", email);
                 holder.button_moreInfo.getContext().startActivity(intent);
             }
 
@@ -104,10 +104,7 @@ public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.ViewHo
         Button button_moreInfo;
         TextView textView_title;
         TextView textView_quality;
-        TextView textView_price;
-        TextView textView_course;
-        TextView textView_profLast;
-        TextView textView_semester;
+        TextView textView_price, textView_authors;
 
         // we will add the image view later
         // create constructor to set these
@@ -117,11 +114,9 @@ public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.ViewHo
             super(itemView);
             // look up each view from the custom layout
             textView_title = itemView.findViewById(R.id.textView_title);
-            textView_course = itemView.findViewById(R.id.textView_course);
-            textView_profLast = itemView.findViewById(R.id.textView_profLast);
-            textView_semester = itemView.findViewById(R.id.textView_semester);
             textView_quality = itemView.findViewById(R.id.textView_quality);
             textView_price = itemView.findViewById(R.id.textView_price);
+            textView_authors = itemView.findViewById(R.id.textView_authors);
             button_moreInfo = itemView.findViewById(R.id.button_moreInfo);
 
         }

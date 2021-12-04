@@ -46,13 +46,11 @@ public class MyListingsAdapter extends RecyclerView.Adapter<MyListingsAdapter.Vi
         Listings listing = listings.get(holder.getAdapterPosition());
         // set the view based on the data and the view names
         holder.textView_title.setText(listing.getTitle());
-        holder.textView_course.setText(listing.getCourse());
-        holder.textView_profLast.setText(listing.getProfessors());
-        holder.textView_semester.setText(listing.getSemester());
         holder.textView_quality.setText(listing.getQuality());
         holder.textView_price.setText("$" + listing.getPrice());
+        holder.textView_authors.setText("by " + listing.getAuthors());
 
-        holder.button_editInfo.setOnClickListener(new View.OnClickListener() {
+        holder.button_moreInfo2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -66,8 +64,9 @@ public class MyListingsAdapter extends RecyclerView.Adapter<MyListingsAdapter.Vi
                 authors = listing.getAuthors();
                 professors = listing.getProfessors();
                 year = listing.getYearPublished();
+                email = listing.getUserEmail();
 
-                Intent intent = new Intent(v.getContext(), EditActivity.class);
+                Intent intent = new Intent(v.getContext(), MyInfoActivity.class);
                 intent.putExtra("ISBN", ISBN);
                 intent.putExtra("title", title);
                 intent.putExtra("quality", quality);
@@ -79,7 +78,7 @@ public class MyListingsAdapter extends RecyclerView.Adapter<MyListingsAdapter.Vi
                 intent.putExtra("yearPublished", year);
                 intent.putExtra("email", email);
                 intent.putExtra("listingID", listingID);
-                Log.e("LISTING", listingID);
+                Log.e("title", title);
                 v.getContext().startActivity(intent);
 
             }
@@ -101,13 +100,10 @@ public class MyListingsAdapter extends RecyclerView.Adapter<MyListingsAdapter.Vi
         // all the views you want to set as you render the row
         // name, birthday, phrase, villager
 
-        Button button_editInfo;
+        Button button_moreInfo2;
         TextView textView_title;
         TextView textView_quality;
-        TextView textView_price;
-        TextView textView_course;
-        TextView textView_profLast;
-        TextView textView_semester;
+        TextView textView_price, textView_authors;
 
         // we will add the image view later
         // create constructor to set these
@@ -116,13 +112,11 @@ public class MyListingsAdapter extends RecyclerView.Adapter<MyListingsAdapter.Vi
             // itemView -> represents the entire view of each row
             super(itemView);
             // look up each view from the custom layout
-            textView_title = itemView.findViewById(R.id.textView_title);
-            textView_course = itemView.findViewById(R.id.textView_course);
-            textView_profLast = itemView.findViewById(R.id.textView_profLast);
-            textView_semester = itemView.findViewById(R.id.textView_semester);
-            textView_quality = itemView.findViewById(R.id.textView_quality);
-            textView_price = itemView.findViewById(R.id.textView_price);
-            button_editInfo = itemView.findViewById(R.id.button_editInfo);
+            textView_title = itemView.findViewById(R.id.textView_title2);
+            textView_quality = itemView.findViewById(R.id.textView_quality2);
+            textView_price = itemView.findViewById(R.id.textView_price2);
+            textView_authors = itemView.findViewById(R.id.textView_authors2);
+            button_moreInfo2 = itemView.findViewById(R.id.button_moreInfo2);
 
         }
 
