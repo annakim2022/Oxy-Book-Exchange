@@ -48,7 +48,7 @@ public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.ViewHo
         // populate data into the item through holder
 
         // grab the actual data model based on the position
-        Listings listing = listings.get(position);
+        Listings listing = listings.get(holder.getAdapterPosition());
         // set the view based on the data and the view names
         holder.textView_title.setText(listing.getTitle());
         holder.textView_course.setText(listing.getCourse());
@@ -56,19 +56,20 @@ public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.ViewHo
         holder.textView_semester.setText(listing.getSemester());
         holder.textView_quality.setText(listing.getQuality());
         holder.textView_price.setText("$" + listing.getPrice());
-        ISBN = listing.getISBN();
-        title = listing.getTitle();
-        quality = listing.getQuality();
-        price = listing.getPrice();
-        course = listing.getCourse();
-        semester = listing.getSemester();
-        authors = listing.getAuthors();
-        professors = listing.getProfessors();
-        year = listing.getYearPublished();
 
         holder.button_moreInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ISBN = listing.getISBN();
+                title = listing.getTitle();
+                quality = listing.getQuality();
+                price = listing.getPrice();
+                course = listing.getCourse();
+                semester = listing.getSemester();
+                authors = listing.getAuthors();
+                professors = listing.getProfessors();
+                year = listing.getYearPublished();
+
                 Intent intent = new Intent(holder.button_moreInfo.getContext(), InfoActivity.class);
                 intent.putExtra("ISBN", ISBN);
                 intent.putExtra("title", title);
@@ -79,7 +80,6 @@ public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.ViewHo
                 intent.putExtra("authors", authors);
                 intent.putExtra("professors", professors);
                 intent.putExtra("yearPublished", year);
-
                 holder.button_moreInfo.getContext().startActivity(intent);
             }
 

@@ -17,6 +17,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.textfield.TextInputEditText;
@@ -44,13 +45,13 @@ public class CreateActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create);
 
-        String email = PreferenceManager.getDefaultSharedPreferences(this).getString("email", "");
+        String email = PreferenceManager.getDefaultSharedPreferences(this).getString("email", "bkim4@oxy.edu");
 
 //        Intent intent = getIntent();
 //        String email = intent.getStringExtra("email");
 
-        RequestQueue MyRequestQueue = Volley.newRequestQueue(this);
-
+//        RequestQueue MyRequestQueue = Volley.newRequestQueue(this);
+//
         input_isbn = findViewById(R.id.input_isbn);
         input_title = findViewById(R.id.input_title);
         input_quality = findViewById(R.id.input_quality);
@@ -90,51 +91,54 @@ public class CreateActivity extends AppCompatActivity {
                     yearPublished = input_yearPublished.getText().toString();
                     professors = input_professors.getText().toString();
 
-                    String url = "http://134.69.236.202:3308/newlisting";
-                    StringRequest MyStringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                    String email = PreferenceManager.getDefaultSharedPreferences(CreateActivity.this).getString("email", "bkim4@oxy.edu");
+                    String postUrl = "http://134.69.236.202:3308/newlisting";
+                    RequestQueue requestQueue = Volley.newRequestQueue(CreateActivity.this);
+
+                    JSONObject MyData = new JSONObject();
+                    try {
+                        MyData.put("listingID", "0"); //Add the data you'd like to send to the server.
+                        MyData.put("userEmail", email);
+                        MyData.put("ISBN", ISBN);
+                        MyData.put("title", title);
+                        MyData.put("quality", quality);
+                        MyData.put("price", price);
+                        MyData.put("course", course);
+                        MyData.put("semester", semester);
+                        MyData.put("yearPublished", yearPublished);
+                        MyData.put("authors", authors);
+                        MyData.put("professors", professors);
+
+                        Toast.makeText(CreateActivity.this, "Success!", Toast.LENGTH_LONG).show();
+
+                        returnToMenu(email);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, postUrl, MyData, new Response.Listener<JSONObject>() {
                         @Override
-                        public void onResponse(String response) {
-                            //This code is executed if the server responds, whether or not the response contains data.
-                            //The String 'response' contains the server's response.
+                        public void onResponse(JSONObject response) {
+                            System.out.println(response);
                         }
-                    }, new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
+                    }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            //This code is executed if there is an error.
+                            error.printStackTrace();
                         }
-                    }) {
-                        protected Map<String, String> getParams() {
-                            Map<String, String> MyData = new HashMap<String, String>();
-                            MyData.put("listingID", "0"); //Add the data you'd like to send to the server.
-                            MyData.put("userEmail", email);
-                            MyData.put("ISBN", ISBN);
-                            MyData.put("title", title);
-                            MyData.put("quality", quality);
-                            MyData.put("price", price);
-                            MyData.put("course", course);
-                            MyData.put("semester", semester);
-                            MyData.put("yearPublished", yearPublished);
-                            MyData.put("authors", authors);
-                            MyData.put("professors", professors);
-                            return MyData;
-                        }
-                    };
-                    MyRequestQueue.add(MyStringRequest);
-
+                    });
+                    requestQueue.add(jsonObjectRequest);
                 } else {
                     Toast.makeText(CreateActivity.this, "Please fill in all sections.", Toast.LENGTH_LONG).show();
                 }
-                Toast.makeText(CreateActivity.this, "Success!", Toast.LENGTH_LONG).show();
-                returnToMenu(email);
             }
         });
-
     }
+
 
     private void autofill(String ISBN) {
         AsyncHttpClient client = new AsyncHttpClient();
         api_url = "https://openlibrary.org/isbn/" + ISBN + ".json";
-        Log.e("CREATE", api_url);
 
         client.get(api_url, new AsyncHttpResponseHandler() {
             @Override

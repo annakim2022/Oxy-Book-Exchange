@@ -17,6 +17,7 @@
         android:layout_marginBottom="8dp"
         android:orientation="vertical"
         android:background="#25FF9800"
+        android:padding="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -42,6 +43,7 @@
                 android:id="@+id/textView_profLast"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:layout_marginTop="3dp"
                 android:text="TextView"
                 android:textColor="#302D2D" />
@@ -51,8 +53,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
-                android:layout_marginLeft="25dp"
-                android:layout_marginRight="25dp"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:layout_marginRight="10dp"
                 android:text="TextView"
                 android:textColor="#302D2D" />
 
@@ -60,6 +63,7 @@
                 android:id="@+id/textView_semester"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:layout_marginTop="3dp"
                 android:text="TextView"
                 android:textColor="#302D2D" />
@@ -73,6 +77,7 @@
             <TextView
                 android:id="@+id/textView_quality"
                 android:layout_width="wrap_content"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
                 android:text="TextView"
@@ -83,8 +88,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
-                android:layout_marginRight="25dp"
-                android:layout_marginLeft="25dp"
+                android:layout_weight="1"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
                 android:text="TextView"
                 android:textColor="#302D2D"
                 android:textStyle="bold" />
@@ -93,8 +99,6 @@
                 android:id="@+id/button_moreInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp"
                 android:scaleX=".75"
                 android:scaleY=".75"
                 android:text="more info" />

@@ -43,7 +43,7 @@ public class MyListingsAdapter extends RecyclerView.Adapter<MyListingsAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull MyListingsAdapter.ViewHolder holder, int position) {
         // populate data into the item through holder
-        Listings listing = listings.get(position);
+        Listings listing = listings.get(holder.getAdapterPosition());
         // set the view based on the data and the view names
         holder.textView_title.setText(listing.getTitle());
         holder.textView_course.setText(listing.getCourse());
@@ -51,22 +51,23 @@ public class MyListingsAdapter extends RecyclerView.Adapter<MyListingsAdapter.Vi
         holder.textView_semester.setText(listing.getSemester());
         holder.textView_quality.setText(listing.getQuality());
         holder.textView_price.setText("$" + listing.getPrice());
-        ISBN = listing.getISBN();
-        title = listing.getTitle();
-        email = listing.getUserEmail();
-        listingID = listing.getListingID();
-        quality = listing.getQuality();
-        price = listing.getPrice();
-        course = listing.getCourse();
-        semester = listing.getSemester();
-        authors = listing.getAuthors();
-        professors = listing.getProfessors();
-        year = listing.getYearPublished();
 
         holder.button_editInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(holder.button_editInfo.getContext(), EditActivity.class);
+
+                listingID = listing.getListingID();
+                ISBN = listing.getISBN();
+                title = listing.getTitle();
+                quality = listing.getQuality();
+                price = listing.getPrice();
+                course = listing.getCourse();
+                semester = listing.getSemester();
+                authors = listing.getAuthors();
+                professors = listing.getProfessors();
+                year = listing.getYearPublished();
+
+                Intent intent = new Intent(v.getContext(), EditActivity.class);
                 intent.putExtra("ISBN", ISBN);
                 intent.putExtra("title", title);
                 intent.putExtra("quality", quality);
@@ -78,10 +79,10 @@ public class MyListingsAdapter extends RecyclerView.Adapter<MyListingsAdapter.Vi
                 intent.putExtra("yearPublished", year);
                 intent.putExtra("email", email);
                 intent.putExtra("listingID", listingID);
+                Log.e("LISTING", listingID);
+                v.getContext().startActivity(intent);
 
-                holder.button_editInfo.getContext().startActivity(intent);
             }
-
         });
 
     }
@@ -124,7 +125,6 @@ public class MyListingsAdapter extends RecyclerView.Adapter<MyListingsAdapter.Vi
             button_editInfo = itemView.findViewById(R.id.button_editInfo);
 
         }
-
 
     }
 }
