@@ -51,7 +51,7 @@ public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.ViewHo
         Listings listing = listings.get(holder.getAdapterPosition());
         // set the view based on the data and the view names
         holder.textView_title.setText(listing.getTitle());
-        holder.textView_quality.setText(listing.getQuality());
+        holder.textView_quality.setText("\"" + listing.getQuality() + "\"");
         holder.textView_price.setText("$" + listing.getPrice());
         holder.textView_authors.setText("by " + listing.getAuthors());
 

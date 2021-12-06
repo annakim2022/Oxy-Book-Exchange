@@ -21,7 +21,7 @@ public class MyInfoActivity extends AppCompatActivity {
     private TextView textView_course;
     private TextView textView_semester;
     private TextView textView_professors, textView_email;
-    private String ISBN, title, year, quality, price, course, semester, authors, email, professors;
+    private String ISBN, title, year, quality, price, course, semester, authors, email, professors, listingID;
     private Button button_backToListings, button_edit;
 
     @Override
@@ -33,7 +33,7 @@ public class MyInfoActivity extends AppCompatActivity {
 
         ISBN = intent.getStringExtra("ISBN");
         title = intent.getStringExtra("title");
-        Log.e("MY INFO", title);
+        listingID = intent.getStringExtra("listingID");
         quality = intent.getStringExtra("quality");
         price = intent.getStringExtra("price");
         course = intent.getStringExtra("course");
@@ -73,13 +73,13 @@ public class MyInfoActivity extends AppCompatActivity {
             }
         });
 
-        button_backToListings = findViewById(R.id.button_backToListings);
-        button_backToListings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goBack(v);
-            }
-        });
+//        button_backToListings = findViewById(R.id.button_backToListings);
+//        button_backToListings.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                goBack(v);
+//            }
+//        });
     }
 
     private void goBack(View v) {
@@ -100,6 +100,7 @@ public class MyInfoActivity extends AppCompatActivity {
         intent.putExtra("professors", professors);
         intent.putExtra("yearPublished", year);
         intent.putExtra("email", email);
+        intent.putExtra("listingID", listingID);
         startActivity(intent);
     }
 }

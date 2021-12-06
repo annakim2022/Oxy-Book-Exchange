@@ -1,5 +1,7 @@
 package com.example.oxybookexchange;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -45,7 +47,7 @@ public class MenuActivity extends AppCompatActivity {
     Button button_signout;
     String email;
 
-//    Button button_account;
+    //    Button button_account;
     private ArrayList<String> listingID, userEmail, ISBN, title, quality, price, course, semester, yearPublished, authors, professors;
 //    private static AsyncHttpClient client = new AsyncHttpClient();
 //
@@ -74,11 +76,11 @@ public class MenuActivity extends AppCompatActivity {
             }
         });
 
+
         button_sell.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String message2 = "let me sell";
-                launchMyListingsActivity(v, message2);
+                launchMyListingsActivity(v);
             }
         });
 
@@ -86,13 +88,30 @@ public class MenuActivity extends AppCompatActivity {
         button_signout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switch (v.getId()) {
-                    // ...
-                    case R.id.button_signout:
-                        signOut();
-                        break;
-                    // ...
-                }
+
+                new AlertDialog.Builder(MenuActivity.this)
+                        .setTitle("Sign Out")
+                        .setMessage("Are you sure you want to sign out?")
+
+                        // Specifying a listener allows you to take an action before dismissing the dialog.
+                        // The dialog is automatically dismissed when a dialog button is clicked.
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                switch (v.getId()) {
+                                    // ...
+                                    case R.id.button_signout:
+                                        signOut();
+                                        break;
+                                    // ...
+                                }
+                            }
+                        })
+
+                        // A null listener allows the button to dismiss the dialog and take no further action.
+                        .setNegativeButton(android.R.string.no, null)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+
             }
 
         });
@@ -126,6 +145,7 @@ public class MenuActivity extends AppCompatActivity {
         client.get(api_url, new AsyncHttpResponseHandler() {
 
                     JSONArray listingsJSON = null;
+
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         try {
@@ -171,7 +191,7 @@ public class MenuActivity extends AppCompatActivity {
         );
     }
 
-    public void launchMyListingsActivity(View view, String s) {
+    public void launchMyListingsActivity(View view) {
         Intent intent = new Intent(this, MyListingsActivity.class);
         listingID = new ArrayList<>();
         userEmail = new ArrayList<>();
@@ -192,6 +212,7 @@ public class MenuActivity extends AppCompatActivity {
         client.get(api_url, new AsyncHttpResponseHandler() {
 
                     JSONArray myListingsJSON = null;
+
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         try {
@@ -250,6 +271,7 @@ public class MenuActivity extends AppCompatActivity {
             }
         });
     }
+
     public void launchLoginActivity() {
         Intent intent = new Intent(this, SignInActivity.class);
         startActivity(intent);

@@ -32,7 +32,7 @@ import cz.msebera.android.httpclient.Header;
 public class MyListingsActivity extends AppCompatActivity {
 
     // create button
-    private Button button_add;
+    private Button button_add, button_backToMenu2;
 
     // search view
     private SearchView filter;
@@ -264,8 +264,21 @@ public class MyListingsActivity extends AppCompatActivity {
                 launchCreateActivity(v);
             }
         });
+
+//        button_backToMenu2 = findViewById(R.id.button_backToMenu2);
+//        button_backToMenu2.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                goBack(v);
+//            }
+//        });
     }
 
+    private void goBack(View v) {
+//        Intent intent = new Intent(this, ListingsActivity.class);
+//        startActivityForResult(intent, 1);
+        finish();
+    }
     public void launchCreateActivity(View view) {
         Intent intent = new Intent(this, CreateActivity.class);
 //        Log.e("email at my listings", email);

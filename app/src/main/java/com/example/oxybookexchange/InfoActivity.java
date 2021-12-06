@@ -75,13 +75,13 @@ public class InfoActivity extends AppCompatActivity {
         textView_professors.setText("Professor(s): " + professors);
         textView_email.setText("Seller Email: " + email);
 
-        button_backToListings = findViewById(R.id.button_backToListings);
-        button_backToListings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goBack(v);
-            }
-        });
+//        button_backToListings = findViewById(R.id.button_backToListings);
+//        button_backToListings.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                goBack(v);
+//            }
+//        });
     }
 
     private void goBack(View v) {

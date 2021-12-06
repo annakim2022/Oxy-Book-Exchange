@@ -1,5 +1,7 @@
 package com.example.oxybookexchange;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -68,6 +70,7 @@ public class EditActivity extends AppCompatActivity {
         String yearPublished2 = intent.getStringExtra("yearPublished");
 //        String email = intent.getStringExtra("email");
         String listingID = intent.getStringExtra("listingID");
+        Log.e("HERE:", listingID);
 
         // set input text to previous info
         input_isbn.setText(ISBN2);
@@ -148,61 +151,53 @@ public class EditActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-//
-//                if (!TextUtils.isEmpty(input_isbn.getText().toString()) && !TextUtils.isEmpty(input_title.getText().toString()) &&
-//                        !TextUtils.isEmpty(input_quality.getText().toString()) && !TextUtils.isEmpty(input_price.getText().toString()) &&
-//                        !TextUtils.isEmpty(input_course.getText().toString()) && !TextUtils.isEmpty(input_semester.getText().toString()) &&
-//                        !TextUtils.isEmpty(input_authors.getText().toString()) && !TextUtils.isEmpty(input_yearPublished.getText().toString()) &&
-//                        !TextUtils.isEmpty(input_professors.getText().toString())) {
+                new AlertDialog.Builder(EditActivity.this)
+                        .setTitle("Delete")
+                        .setMessage("Are you sure you want to delete this listing?")
 
-//                    title = input_title.getText().toString();
-//                    quality = input_quality.getText().toString();
-//                    price = input_price.getText().toString();
-//                    course = input_course.getText().toString();
-//                    semester = input_semester.getText().toString();
-//                    authors = input_authors.getText().toString();
-//                    yearPublished = input_yearPublished.getText().toString();
-//                    professors = input_professors.getText().toString();
+                        // Specifying a listener allows you to take an action before dismissing the dialog.
+                        // The dialog is automatically dismissed when a dialog button is clicked.
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
 
-                    String email = PreferenceManager.getDefaultSharedPreferences(EditActivity.this).getString("email", "bkim4@oxy.edu");
-                    String postUrl = "http://134.69.236.202:3308/deletelisting";
-                    RequestQueue requestQueue = Volley.newRequestQueue(EditActivity.this);
 
-                    JSONObject MyData = new JSONObject();
-                    try {
-                        MyData.put("listingID", listingID); //Add the data you'd like to send to the server.
-//                        MyData.put("userEmail", email);
-//                        MyData.put("ISBN", ISBN);
-//                        MyData.put("title", title);
-//                        MyData.put("quality", quality);
-//                        MyData.put("price", price);
-//                        MyData.put("course", course);
-//                        MyData.put("semester", semester);
-//                        MyData.put("yearPublished", yearPublished);
-//                        MyData.put("authors", authors);
-//                        MyData.put("professors", professors);
+                                String email = PreferenceManager.getDefaultSharedPreferences(EditActivity.this).getString("email", "bkim4@oxy.edu");
+                                String postUrl = "http://134.69.236.202:3308/deletelisting";
+                                RequestQueue requestQueue = Volley.newRequestQueue(EditActivity.this);
 
-                        Toast.makeText(EditActivity.this, "Success!", Toast.LENGTH_LONG).show();
-                        returnToMenu(email);
+                                JSONObject MyData = new JSONObject();
+                                try {
+                                    MyData.put("listingID", listingID); //Add the data you'd like to send to the server.
 
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, postUrl, MyData, new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            System.out.println(response);
-                        }
-                    }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            error.printStackTrace();
-                        }
-                    });
-                    requestQueue.add(jsonObjectRequest);
+                                    Toast.makeText(EditActivity.this, "Success!", Toast.LENGTH_LONG).show();
+                                    returnToMenu(email);
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, postUrl, MyData, new Response.Listener<JSONObject>() {
+                                    @Override
+                                    public void onResponse(JSONObject response) {
+                                        System.out.println(response);
+                                    }
+                                }, new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        error.printStackTrace();
+                                    }
+                                });
+                                requestQueue.add(jsonObjectRequest);
 //                } else {
 //                    Toast.makeText(EditActivity.this, "Please fill in all sections.", Toast.LENGTH_LONG).show();
 //                }
+
+                            }
+                        })
+
+                        // A null listener allows the button to dismiss the dialog and take no further action.
+                        .setNegativeButton(android.R.string.no, null)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
             }
         });
 

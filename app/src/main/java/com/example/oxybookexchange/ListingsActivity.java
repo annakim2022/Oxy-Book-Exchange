@@ -61,6 +61,7 @@ public class ListingsActivity extends AppCompatActivity {
     private ArrayList<Listings> listings;
     private ArrayList<Listings> displayedListings;
 
+    Button button_backToMenu;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -278,7 +279,18 @@ public class ListingsActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
 
+//        button_backToMenu = findViewById(R.id.button_backToMenu);
+//        button_backToMenu.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                goBack(v);
+//            }
+//        });
     }
 
-
+    private void goBack(View v) {
+//        Intent intent = new Intent(this, ListingsActivity.class);
+//        startActivityForResult(intent, 1);
+        finish();
+    }
 }
