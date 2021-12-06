@@ -95,7 +95,6 @@ public class MyListingsAdapter extends RecyclerView.Adapter<MyListingsAdapter.Vi
     // provides a direct reference to each of the views within the data item
     // used to cache the views within the item layout for fast access
 
-
     class ViewHolder extends RecyclerView.ViewHolder {
         // all the views you want to set as you render the row
         // name, birthday, phrase, villager

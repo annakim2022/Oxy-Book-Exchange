@@ -16,9 +16,7 @@ public class NoListingsActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nolistings);
-//        Intent intent = getIntent();
-//        email = intent.getStringExtra("userEmail");
-//        Log.e("NO LISTING", email);
+
         button_add2 = findViewById(R.id.button_add2);
         button_add2.setOnClickListener(new View.OnClickListener() {
             @Override

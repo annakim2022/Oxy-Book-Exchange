@@ -83,8 +83,6 @@ public class MyInfoActivity extends AppCompatActivity {
     }
 
     private void goBack(View v) {
-//        Intent intent = new Intent(this, ListingsActivity.class);
-//        startActivityForResult(intent, 1);
         finish();
     }
 

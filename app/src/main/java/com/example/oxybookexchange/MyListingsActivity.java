@@ -275,14 +275,10 @@ public class MyListingsActivity extends AppCompatActivity {
     }
 
     private void goBack(View v) {
-//        Intent intent = new Intent(this, ListingsActivity.class);
-//        startActivityForResult(intent, 1);
         finish();
     }
     public void launchCreateActivity(View view) {
         Intent intent = new Intent(this, CreateActivity.class);
-//        Log.e("email at my listings", email);
-//        intent.putExtra("email", email);
         startActivity(intent);
     }
 }

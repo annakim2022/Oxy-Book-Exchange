@@ -34,7 +34,6 @@ public class Listings {
         this.authors = authors;
         this.professors = professors;
 
-
     }
 
 

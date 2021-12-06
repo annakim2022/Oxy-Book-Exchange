@@ -47,11 +47,6 @@ public class CreateActivity extends AppCompatActivity {
 
         String email = PreferenceManager.getDefaultSharedPreferences(this).getString("email", "bkim4@oxy.edu");
 
-//        Intent intent = getIntent();
-//        String email = intent.getStringExtra("email");
-
-//        RequestQueue MyRequestQueue = Volley.newRequestQueue(this);
-//
         input_isbn = findViewById(R.id.input_isbn);
         input_title = findViewById(R.id.input_title);
         input_quality = findViewById(R.id.input_quality);

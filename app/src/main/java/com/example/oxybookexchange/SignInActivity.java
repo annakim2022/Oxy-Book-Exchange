@@ -70,7 +70,6 @@ public class SignInActivity extends AppCompatActivity {
         googleSignInClient.signOut().addOnCompleteListener(this, new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-               // launchLoginActivity();
             }
         });
     }

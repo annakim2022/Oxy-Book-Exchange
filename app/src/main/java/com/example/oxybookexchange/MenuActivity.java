@@ -49,10 +49,6 @@ public class MenuActivity extends AppCompatActivity {
 
     //    Button button_account;
     private ArrayList<String> listingID, userEmail, ISBN, title, quality, price, course, semester, yearPublished, authors, professors;
-//    private static AsyncHttpClient client = new AsyncHttpClient();
-//
-//    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-//    String email = preferences.getString("userEmail", "");
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

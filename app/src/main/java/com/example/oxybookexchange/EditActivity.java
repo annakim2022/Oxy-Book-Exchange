@@ -187,9 +187,6 @@ public class EditActivity extends AppCompatActivity {
                                     }
                                 });
                                 requestQueue.add(jsonObjectRequest);
-//                } else {
-//                    Toast.makeText(EditActivity.this, "Please fill in all sections.", Toast.LENGTH_LONG).show();
-//                }
 
                             }
                         })

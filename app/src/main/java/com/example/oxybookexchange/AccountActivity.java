@@ -101,11 +101,6 @@ public class AccountActivity extends AppCompatActivity {
         });
         requestQueue.add(jsonArrayRequest);
 
-        //get intent
-        //Intent intent = getIntent();
-
-        //Google authentication
-
         button_sign_out = findViewById(R.id.button_sign_out);
         button_sign_out.setOnClickListener(new View.OnClickListener() {
             @Override
