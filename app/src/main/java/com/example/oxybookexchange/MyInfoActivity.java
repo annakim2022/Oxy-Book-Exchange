@@ -54,7 +54,7 @@ public class MyInfoActivity extends AppCompatActivity {
         textView_professors = findViewById(R.id.professors2);
         textView_email = findViewById(R.id.email2);
 
-        textView_title.setText("Title: " + title);
+        textView_title.setText(title);
         textView_isbn.setText("ISBN: " + ISBN);
         textView_authors.setText("Author(s): " + authors);
         textView_year.setText("Year Published: " + year);
