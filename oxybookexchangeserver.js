@@ -4,7 +4,7 @@ const express = require('express');
 const bodyparser = require('body-parser');
 
 const con = mysql.createConnection({
-  host: "134.69.236.202", // IP address of my computer
+  host: "<IP Address>", // IP address of my computer
   user: 'root',
   password: 'oxybookexchange1',
   database: 'oxybookexchange'
