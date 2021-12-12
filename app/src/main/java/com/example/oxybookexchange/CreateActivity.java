@@ -85,7 +85,7 @@ public class CreateActivity extends AppCompatActivity {
                     professors = input_professors.getText().toString();
 
                     String email = PreferenceManager.getDefaultSharedPreferences(CreateActivity.this).getString("email", "");
-                    String postUrl = "http://134.69.236.202:3308/newlisting";
+                    String postUrl = "http://<IP Address>/newlisting";
                     RequestQueue requestQueue = Volley.newRequestQueue(CreateActivity.this);
 
                     JSONObject MyData = new JSONObject();
