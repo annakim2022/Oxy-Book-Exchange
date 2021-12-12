@@ -4,7 +4,7 @@ const express = require('express');
 const bodyparser = require('body-parser');
 
 const con = mysql.createConnection({
-  host: "134.69.236.202", //IP address of my computer
+  host: "134.69.236.202", // IP address of my computer
   user: 'root',
   password: 'oxybookexchange1',
   database: 'oxybookexchange'
@@ -21,56 +21,23 @@ app.use(express.static(publicDir));
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({extended:true}));
 
-
-// app.use(bodyparser.urlencoded({extended : true}));
-app.post("/newlisting", function(request, response) {
-  console.log(request.body); //This prints the JSON document received (if it is a JSON document)
-  var listingID = parseInt(request.body.listingID);
-  var userEmail = request.body.userEmail;
-  var ISBN = BigInt(request.body.ISBN);
-  var title = request.body.title;
-  var quality = request.body.quality;
-  var price = request.body.price;
-  var course = request.body.course;
-  var semester = request.body.semester;
-  var yearPublished = request.body.yearPublished;
-  var authors = request.body.authors;
-  var professors = request.body.professors;
-  
-  var sql = `INSERT INTO listings (listingID, userEmail, ISBN, title, quality, price, course, semester, yearPublished, authors, professors) VALUES (${listingID}, "${userEmail}", ${ISBN}, "${title}", "${quality}","${price}","${course}","${semester}","${yearPublished}","${authors}","${professors}");`;
-  con.query(sql, function(err, result) {
-    if (err) throw err;
-    console.log('record inserted');
-    // res.redirect('/listings');
+// retrieve all listings
+app.get("/listings",(req,res,next)=>{
+  con.query('SELECT * FROM listings;', function(error, result, fields){
+    con.on('error', function(err){
+      console.log('[MYSQL]ERROR', err);
+    });
+    if(result && result.length){
+      res.end(JSON.stringify(result));
+    }
+    else{
+      res.end(JSON.stringify('no listings here'));
+    }
+    console.log("hi");
   });
 });
 
-
-app.post("/updatelisting", function(request, response) {
-  console.log(request.body); //This prints the JSON document received (if it is a JSON document)
-  var listingID = parseInt(request.body.listingID);
-  // var userEmail = request.body.userEmail;
-  var ISBN = BigInt(request.body.ISBN);
-  var title = request.body.title;
-  var quality = request.body.quality;
-  var price = request.body.price;
-  var course = request.body.course;
-  var semester = request.body.semester;
-  var yearPublished = request.body.yearPublished;
-  var authors = request.body.authors;
-  var professors = request.body.professors;
-  
-  var sql = `UPDATE listings SET ISBN = ${ISBN}, title = "${title}", quality = "${quality}", price = "${price}", course = "${course}", semester = "${semester}", authors= "${authors}", yearPublished = "${yearPublished}", professors = "${professors}" WHERE listingID = ${listingID};`
-  con.query(sql, function(err, result) {
-    if (err) throw err;
-    console.log(result.affectedRows + " record(s) updated");
-    // req.flash('success', 'Data added successfully!');
-    // res.redirect('/listings');
-  });
-});
-
-
-
+// retrieve listings by user email
 app.get("/listings/:userEmail",(req,res, next)=>{
   const userEmail = req.params.userEmail;
   console.log(userEmail);
@@ -91,63 +58,64 @@ app.get("/listings/:userEmail",(req,res, next)=>{
   });
 });
 
-
-
-
-app.get("/listings",(req,res,next)=>{
-  con.query('SELECT * FROM listings;', function(error, result, fields){
-    con.on('error', function(err){
-      console.log('[MYSQL]ERROR', err);
-    });
-    if(result && result.length){
-      res.end(JSON.stringify(result));
-    }
-    else{
-      res.end(JSON.stringify('no listings here'));
-    }
-    console.log("hi");
+// create new listing in database
+app.post("/newlisting", function(req, res) {
+  console.log(req.body); //This prints the JSON document received (if it is a JSON document)
+  var listingID = parseInt(req.body.listingID);
+  var userEmail = req.body.userEmail;
+  var ISBN = BigInt(req.body.ISBN);
+  var title = req.body.title;
+  var quality = req.body.quality;
+  var price = req.body.price;
+  var course = req.body.course;
+  var semester = req.body.semester;
+  var yearPublished = req.body.yearPublished;
+  var authors = req.body.authors;
+  var professors = req.body.professors;
+  
+  var sql = `INSERT INTO listings (listingID, userEmail, ISBN, title, quality, price, course, semester, yearPublished, authors, professors) VALUES (${listingID}, "${userEmail}", ${ISBN}, "${title}", "${quality}","${price}","${course}","${semester}","${yearPublished}","${authors}","${professors}");`;
+  con.query(sql, function(err, result) {
+    if (err) throw err;
+    console.log('record inserted');
+    res.redirect('/listings');
   });
 });
 
+// update existing listing in database
+app.post("/updatelisting", function(req, res) {
+  console.log(req.body); //This prints the JSON document received (if it is a JSON document)
+  var listingID = parseInt(req.body.listingID);
+  var ISBN = BigInt(req.body.ISBN);
+  var title = req.body.title;
+  var quality = req.body.quality;
+  var price = req.body.price;
+  var course = req.body.course;
+  var semester = req.body.semester;
+  var yearPublished = req.body.yearPublished;
+  var authors = req.body.authors;
+  var professors = req.body.professors;
+  
+  var sql = `UPDATE listings SET ISBN = ${ISBN}, title = "${title}", quality = "${quality}", price = "${price}", course = "${course}", semester = "${semester}", authors= "${authors}", yearPublished = "${yearPublished}", professors = "${professors}" WHERE listingID = ${listingID};`
+  con.query(sql, function(err, result) {
+    if (err) throw err;
+    console.log(result.affectedRows + " record(s) updated");
+    res.redirect('/listings');
+  });
+});
 
-// app.get("/users",(req,res,next)=>{
-//   con.query('SELECT * FROM users;', function(error, result, fields){
-//     con.on('error', function(err){
-//       console.log('[MYSQL]ERROR', err);
-//     });
-//     if(result && result.length){
-//       res.end(JSON.stringify(result));
-//     }
-//     else{
-//       res.end(JSON.stringify('no book here'));
-//     }
-//     console.log("hi");
-//   });
-// });
-
-// app.listen(3308,()=>{
-//   console.log('port 3308 running api');
-// });
-
-// app.on('close', function(){
-//   console.log('closed')
-//   // something to trigger close here
-// });
-
-
-app.post("/deletelisting", function(request, response) {
-  console.log(request.body); //This prints the JSON document received (if it is a JSON document)
-  var listingID = parseInt(request.body.listingID);
+// delete existing listing in database
+app.post("/deletelisting", function(req, res) {
+  console.log(req.body); //This prints the JSON document received (if it is a JSON document)
+  var listingID = parseInt(req.body.listingID);
 
   var sql = `DELETE FROM listings WHERE listingID = ${listingID};`
   con.query(sql, function(err, result) {
     if (err) throw err;
     console.log(result.affectedRows + " record(s) updated");
-    // req.flash('success', 'Data added successfully!');
-    // res.redirect('/listings');
-  });
+    res.redirect('/listings');
+  }); 
 });
 
-
-
-
+app.listen(3308,()=>{
+  console.log('port 3308 running api');
+});
