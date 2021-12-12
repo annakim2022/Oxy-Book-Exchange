@@ -1,0 +1,28 @@
+DROP DATABASE IF EXISTS oxybookexchange;
+CREATE DATABASE oxybookexchange;
+USE oxybookexchange;
+
+CREATE TABLE IF NOT EXISTS listings (
+	listingID int auto_increment primary key,
+    userEmail varchar(50) not null,
+	ISBN bigint not null,
+    title varchar(100) not null,
+	quality varchar(20) not null,
+    price varchar(20) not null,
+	course varchar(10) not null,
+    semester varchar(15) not null,
+    yearPublished varchar(20) not null,
+    authors varchar(200) not null,
+    professors varchar(200) not null
+    -- FOREIGN KEY (userNA) references users(userID)
+);
+
+insert into listings (listingID, userEmail, ISBN, title, quality, price, course, semester, yearPublished, authors, professors)
+values (1000, 'bkim4@oxy.edu', 9781932907001, 'Save the Cat!', 'like new', '10.00', 'MAC 320', 'Spring 2020', '2005', 'Snyder', 'Williams'),
+ (0, 'bkim4@oxy.edu', 9781932907001, 'Save the Cat!', 'like new', '10.00', 'MAC 320', 'Spring 2020', '2005', 'Snyder', 'Williams'),
+ (0, 'bkim4@oxy.edu', 9781932907001, 'Save the Cat!', 'like new', '10.00', 'MAC 320', 'Spring 2020', '2005', 'Snyder', 'Williams');
+
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'<IP address>';
+flush privileges;
+
+ALTER USER 'root'@'<IP address>' IDENTIFIED WITH mysql_native_password BY 'oxybookexchange1';
