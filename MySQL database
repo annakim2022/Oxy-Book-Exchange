@@ -22,7 +22,7 @@ values (1000, 'bkim4@oxy.edu', 9781932907001, 'Save the Cat!', 'like new', '10.0
  (0, 'bkim4@oxy.edu', 9781932907001, 'Save the Cat!', 'like new', '10.00', 'MAC 320', 'Spring 2020', '2005', 'Snyder', 'Williams'),
  (0, 'bkim4@oxy.edu', 9781932907001, 'Save the Cat!', 'like new', '10.00', 'MAC 320', 'Spring 2020', '2005', 'Snyder', 'Williams');
 
-GRANT ALL PRIVILEGES ON *.* TO 'root'@'134.69.236.202';
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'<IP address>';
 flush privileges;
 
 ALTER USER 'root'@'<IP address>' IDENTIFIED WITH mysql_native_password BY 'oxybookexchange1';
