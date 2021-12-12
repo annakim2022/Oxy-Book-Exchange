@@ -130,7 +130,7 @@ public class MenuActivity extends AppCompatActivity {
         authors = new ArrayList<>();
         professors = new ArrayList<>();
 
-        String api_url = "http://134.69.236.202:3308/listings";
+        String api_url = "http://<IP Address>/listings";
 
         client.get(api_url, new AsyncHttpResponseHandler() {
 
@@ -195,7 +195,7 @@ public class MenuActivity extends AppCompatActivity {
         authors = new ArrayList<>();
         professors = new ArrayList<>();
 
-        String api_url = "http://134.69.236.202:3308/listings/" + email;
+        String api_url = "http://<IP Address>/listings/" + email;
 
         client.get(api_url, new AsyncHttpResponseHandler() {
 
