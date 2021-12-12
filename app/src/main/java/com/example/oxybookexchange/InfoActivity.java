@@ -67,14 +67,14 @@ public class InfoActivity extends AppCompatActivity {
         textView_email = findViewById(R.id.email);
 
         textView_title.setText(title);
-        textView_isbn.setText("ISBN: " + ISBN);
-        textView_authors.setText("Author(s): " + authors);
-        textView_year.setText("Year Published: " + year);
-        textView_quality.setText("Quality: " + quality);
-        textView_price.setText("Price: $" + price);
-        textView_course.setText("Course: " + course);
-        textView_semester.setText("Semester: " + semester);
-        textView_professors.setText("Professor(s): " + professors);
+        textView_isbn.setText("ISBN:  " + ISBN);
+        textView_authors.setText("Author(s):  " + authors);
+        textView_year.setText("Year Published:  " + year);
+        textView_quality.setText("Quality:  " + quality);
+        textView_price.setText("Price:  $" + price);
+        textView_course.setText("Course:  " + course);
+        textView_semester.setText("Semester:  " + semester);
+        textView_professors.setText("Professor(s):  " + professors);
         textView_email.setText(email);
 
         String name = PreferenceManager.getDefaultSharedPreferences(this).getString("name", "");
