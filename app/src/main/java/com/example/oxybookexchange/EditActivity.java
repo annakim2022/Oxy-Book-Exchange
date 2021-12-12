@@ -105,7 +105,7 @@ public class EditActivity extends AppCompatActivity {
                     professors = input_professors.getText().toString();
 
                     String email = PreferenceManager.getDefaultSharedPreferences(EditActivity.this).getString("email", "bkim4@oxy.edu");
-                    String postUrl = "http://134.69.236.202:3308/updatelisting";
+                    String postUrl = "http://<IP Address>/updatelisting";
                     RequestQueue requestQueue = Volley.newRequestQueue(EditActivity.this);
 
                     JSONObject MyData = new JSONObject();
@@ -162,7 +162,7 @@ public class EditActivity extends AppCompatActivity {
 
 
                                 String email = PreferenceManager.getDefaultSharedPreferences(EditActivity.this).getString("email", "bkim4@oxy.edu");
-                                String postUrl = "http://134.69.236.202:3308/deletelisting";
+                                String postUrl = "http://<IP Address>/deletelisting";
                                 RequestQueue requestQueue = Volley.newRequestQueue(EditActivity.this);
 
                                 JSONObject MyData = new JSONObject();
