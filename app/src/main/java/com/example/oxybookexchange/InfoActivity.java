@@ -1,7 +1,10 @@
 package com.example.oxybookexchange;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -33,7 +36,6 @@ public class InfoActivity extends AppCompatActivity {
     private TextView textView_semester;
     private TextView textView_professors, textView_email;
     private String ISBN, title, year, quality, price, course, semester, authors, professors, email;
-    private Button button_backToListings;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,15 +75,24 @@ public class InfoActivity extends AppCompatActivity {
         textView_course.setText("Course: " + course);
         textView_semester.setText("Semester: " + semester);
         textView_professors.setText("Professor(s): " + professors);
-        textView_email.setText("Seller Email: " + email);
+        textView_email.setText(email);
 
-//        button_backToListings = findViewById(R.id.button_backToListings);
-//        button_backToListings.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                goBack(v);
-//            }
-//        });
+        String name = PreferenceManager.getDefaultSharedPreferences(this).getString("name", "");
+
+        textView_email.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try{
+                    Intent intent = new Intent (Intent.ACTION_VIEW , Uri.parse("mailto:" + email));
+                    intent.putExtra(Intent.EXTRA_SUBJECT, "Oxy Book Exchange");
+                    intent.putExtra(Intent.EXTRA_TEXT, "Hi, \n\n My name is " + name + " and I'm interested in your listing for \"" + title + "\" on Oxy Book Exchange! Would you like to sell it to me? \n\n\n Best, \n\n " + name);
+                    startActivity(intent);
+                }catch(ActivityNotFoundException e){
+
+                }
+            }
+        });
+
     }
 
     private void goBack(View v) {

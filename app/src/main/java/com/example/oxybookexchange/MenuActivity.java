@@ -45,7 +45,7 @@ public class MenuActivity extends AppCompatActivity {
     Button button_buy;
     Button button_sell;
     Button button_signout;
-    String email;
+    String email, name;
 
     //    Button button_account;
     private ArrayList<String> listingID, userEmail, ISBN, title, quality, price, course, semester, yearPublished, authors, professors;
@@ -58,7 +58,9 @@ public class MenuActivity extends AppCompatActivity {
         // set email to shared preferences
         Intent intent2 = getIntent();
         email = intent2.getStringExtra("email");
+        name = intent2.getStringExtra("name");
         PreferenceManager.getDefaultSharedPreferences(this).edit().putString("email", email).apply();
+        PreferenceManager.getDefaultSharedPreferences(this).edit().putString("name", name).apply();
 
         //set buttons
         button_buy = findViewById(R.id.button_buy);
@@ -111,14 +113,6 @@ public class MenuActivity extends AppCompatActivity {
             }
 
         });
-
-//        button_account.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                launchAccountActivity(v);
-//            }
-//        });
-
     }
 
     public void launchListingsActivity(View view) {
@@ -201,9 +195,7 @@ public class MenuActivity extends AppCompatActivity {
         authors = new ArrayList<>();
         professors = new ArrayList<>();
 
-        Log.e("MENU", email);
         String api_url = "http://134.69.236.202:3308/listings/" + email;
-
 
         client.get(api_url, new AsyncHttpResponseHandler() {
 

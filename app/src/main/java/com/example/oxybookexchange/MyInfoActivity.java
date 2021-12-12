@@ -22,7 +22,7 @@ public class MyInfoActivity extends AppCompatActivity {
     private TextView textView_semester;
     private TextView textView_professors, textView_email;
     private String ISBN, title, year, quality, price, course, semester, authors, email, professors, listingID;
-    private Button button_backToListings, button_edit;
+    private Button button_edit;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,13 +73,6 @@ public class MyInfoActivity extends AppCompatActivity {
             }
         });
 
-//        button_backToListings = findViewById(R.id.button_backToListings);
-//        button_backToListings.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                goBack(v);
-//            }
-//        });
     }
 
     private void goBack(View v) {

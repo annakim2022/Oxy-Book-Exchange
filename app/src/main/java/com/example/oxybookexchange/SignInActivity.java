@@ -32,7 +32,6 @@ public class SignInActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signin);
-        //set buttons
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -47,12 +46,9 @@ public class SignInActivity extends AppCompatActivity {
                     case R.id.sign_in_button:
                         signIn();
 
-                    // ...
                 }
             }
         });
-
-
     }
 
     @Override
@@ -108,16 +104,16 @@ public class SignInActivity extends AppCompatActivity {
     public void updateUI(GoogleSignInAccount account){
         if (account != null) {
             String personEmail = account.getEmail();
+            String personName = account.getGivenName() + " " + account.getFamilyName();
             if(personEmail.contains("@oxy.edu")){
-                Log.e("HERE", "oxy email");
                 Intent intent = new Intent(this, MenuActivity.class);
                 intent.putExtra("email", personEmail);
+                intent.putExtra("name", personName);
                 startActivity(intent);
             }
             else {
                 Toast.makeText(this,"Please enter an Oxy email.",Toast.LENGTH_LONG).show();
                 signOut();
-                Log.e("HERE", "not oxy email");
             }
         }
     }

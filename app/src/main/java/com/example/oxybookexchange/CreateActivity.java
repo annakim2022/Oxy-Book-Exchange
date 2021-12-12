@@ -45,8 +45,6 @@ public class CreateActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create);
 
-        String email = PreferenceManager.getDefaultSharedPreferences(this).getString("email", "bkim4@oxy.edu");
-
         input_isbn = findViewById(R.id.input_isbn);
         input_title = findViewById(R.id.input_title);
         input_quality = findViewById(R.id.input_quality);
@@ -86,7 +84,7 @@ public class CreateActivity extends AppCompatActivity {
                     yearPublished = input_yearPublished.getText().toString();
                     professors = input_professors.getText().toString();
 
-                    String email = PreferenceManager.getDefaultSharedPreferences(CreateActivity.this).getString("email", "bkim4@oxy.edu");
+                    String email = PreferenceManager.getDefaultSharedPreferences(CreateActivity.this).getString("email", "");
                     String postUrl = "http://134.69.236.202:3308/newlisting";
                     RequestQueue requestQueue = Volley.newRequestQueue(CreateActivity.this);
 

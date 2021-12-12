@@ -130,14 +130,31 @@
                 android:text="TextView"
                 android:textColor="@color/black" />
 
-            <TextView
-                android:id="@+id/email"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:paddingLeft="5dp"
-                android:text="TextView"
-                android:textColor="@color/black" />
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:paddingLeft="5dp"
+                    android:textColor="@color/black"
+                    android:text="Seller email: " />
+
+                <TextView
+                    android:id="@+id/email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="TextView"
+                    android:textColor="#1E55FB" />
+            </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
 
